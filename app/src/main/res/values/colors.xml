@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorMaroon">#800000</color>
+    <color name="colorDarkMaroon">#8B0000</color>
+    <color name="colorGold">#FFD700</color>
+    <color name="colorMetallicGold">#D4AF37</color>
+    <color name="colorVegasGold">#C5B358</color>
+    <color name="colorOldGold">#CFB53B</color>
+    <color name="colorGoldenRon">#DAA520</color>
+    <color name="colorKhaki">#F0E68C</color>
+    <color name="colorBtnFocus">#1e69ff</color>
+
+    <color name="colorListDivider">#d9d9d9</color>
+    <color name="colorListRowStartColor">#ffffff</color>
+    <color name="colorListRowEndColor">#ffffff</color>
+    <color name="colorListRowHoverStartColor">#ebeef0</color>
+    <color name="colorListRowHoverEndColor">#ebeef0</color>
+
+</resources>
