@@ -2,6 +2,7 @@ package com.citparkingsystem.lib;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 /**
  * Created by Dave Tolentin on 7/16/2017.
@@ -17,7 +18,7 @@ public class SessionManager extends ServerAddress {
     private SharedPreferences.Editor editor;
 
     public SessionManager(Context context) {
-       sharedPreferences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        sharedPreferences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = sharedPreferences.edit();
     }
 
@@ -28,11 +29,16 @@ public class SessionManager extends ServerAddress {
         editor.putString("keyFirstName", firstName);
         editor.putString("keyLastName", lastName);
         editor.putString("keyUserProfile", "http://"+IP+""+PORT+"/"+PACKAGE+userProfile);
-        editor.commit();
+        editor.apply();
     }
 
-    public void parkingAreaAvailableSlots(String slots) {
-        editor.putString("keySlots", slots);
+    public void parkingAreaAvailableSlotsAcademic(String slots) {
+        editor.putString("keySlotsAcademic", slots);
+        editor.apply();
+    }
+
+    public void parkingArea(String what) {
+        editor.putString("keyParkingArea", what);
         editor.apply();
     }
 
@@ -43,6 +49,6 @@ public class SessionManager extends ServerAddress {
     public void clearUserData() {
         SharedPreferences.Editor sharedEditor = sharedPreferences.edit();
         sharedEditor.clear();
-        sharedEditor.commit();
+        sharedEditor.apply();
     }
 }

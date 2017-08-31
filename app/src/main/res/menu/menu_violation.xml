@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:yourapp="http://schemas.android.com/apk/res-auto" >
-    <item android:id="@+id/action_custom_search"
-        android:title="@string/custom_search"
-        android:orderInCategory="100"
-        yourapp:showAsAction="never" />
-    <item android:id="@+id/action_clear"
-        android:title="@string/settings"
-        android:orderInCategory="100"
-        yourapp:showAsAction="never" />
-    <item android:id="@+id/action_search"
+    <item android:id="@+id/menu_search_violation"
         android:title="@string/search"
         android:icon="@mipmap/ic_search_white_24dp"
         yourapp:showAsAction="ifRoom|collapseActionView"
         yourapp:actionViewClass="android.support.v7.widget.SearchView" />
+    <item android:id="@+id/menu_add_violation"
+        android:title="@string/add"
+        android:icon="@mipmap/ic_add_white_24dp"
+        yourapp:showAsAction="ifRoom|collapseActionView" />
 </menu>

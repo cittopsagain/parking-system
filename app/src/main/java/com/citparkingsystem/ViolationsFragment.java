@@ -1,12 +1,12 @@
 package com.citparkingsystem;
 
-import android.app.SearchManager;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,12 +14,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.citparkingsystem.adapters.ViolationAdapter;
 import com.citparkingsystem.encapsulate.Violation;
+import com.citparkingsystem.lib.ParkingAreas;
 import com.citparkingsystem.requests.Parking;
 
 import org.json.JSONArray;
@@ -27,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Dave Tolentin on 7/27/2017.
@@ -37,10 +38,9 @@ public class ViolationsFragment extends Fragment {
 
     private Parking parking;
     private ViolationAdapter violationAdapter;
-    private List<Violation> violationList = new ArrayList<Violation>();
+    private ArrayList<Violation> violationList = new ArrayList<Violation>();
     private ListView listView;
-    private MenuItem searchAction;
-    private String currentFilter;
+    private AlertDialog.Builder builder;
 
     private final static String TAG = ViolationsFragment.class.getSimpleName();
 
@@ -51,6 +51,12 @@ public class ViolationsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parking = new Parking(getActivity());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(getActivity(),
+                    android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getActivity());
+        }
     }
 
     @Override
@@ -70,9 +76,9 @@ public class ViolationsFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_search, menu);
+        inflater.inflate(R.menu.menu_violation, menu);
         SearchView searchView =
-                (SearchView) menu.findItem(R.id.action_search).getActionView();
+                (SearchView) menu.findItem(R.id.menu_search_violation).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -81,7 +87,6 @@ public class ViolationsFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                currentFilter = !TextUtils.isEmpty(newText) ? newText : null;
                 violationAdapter.getFilter().filter(newText);
                 return false;
             }
@@ -90,8 +95,70 @@ public class ViolationsFragment extends Fragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        // searchAction = menu.findItem(R.id.action_search);
         super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_add_violation) {
+            final ArrayList selectedArea = new ArrayList();
+
+            LinearLayout layout = new LinearLayout(getActivity());
+            layout.setOrientation(LinearLayout.VERTICAL);
+
+            final EditText txtPlateNum = new EditText(getActivity());
+            final EditText txtViolationType = new EditText(getActivity());
+
+            txtPlateNum.setHint(R.string.enter_plate_num);
+            txtViolationType.setHint(R.string.enter_violation);
+
+            layout.addView(txtPlateNum);
+            layout.addView(txtViolationType);
+            builder.setTitle("Alert")
+                    .setView(layout)
+                    .setSingleChoiceItems(ParkingAreas.area, 0, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            selectedArea.add(0, ParkingAreas.area[which]);
+                        }
+                    })
+                    .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String plateNum = txtPlateNum.getText().toString();
+                            String violation = txtViolationType.getText().toString();
+                            if (plateNum.trim().length() > 0 || violation.trim().length() > 0) {
+                                parking.addViolation(plateNum, violation,
+                                        selectedArea.size() == 0 ? ParkingAreas.area[0].toString() :
+                                                selectedArea.get(0).toString(),
+                                        new Parking.Callback() {
+                                    @Override
+                                    public void successResponse(Object object) {
+                                        Log.e(TAG, (String) object);
+                                        Toast.makeText(getActivity(), R.string.success_save,
+                                                Toast.LENGTH_SHORT).show();
+                                        violationList.clear();
+                                        new executeTask().execute();
+                                    }
+
+                                    @Override
+                                    public void errorResponse(Object object) {
+                                        Log.e(TAG, (String) object);
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(getActivity(), R.string.error_empty_fields,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     class executeTask extends AsyncTask<String, String, String> {
@@ -127,7 +194,7 @@ public class ViolationsFragment extends Fragment {
 
                 @Override
                 public void errorResponse(Object object) {
-                    Log.e(TAG, "Error: "+(String) object);
+                    Log.e(TAG, (String) object);
                 }
             });
             return null;

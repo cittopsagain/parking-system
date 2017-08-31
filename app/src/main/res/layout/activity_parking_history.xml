@@ -6,21 +6,21 @@
     android:padding="8dp">
 
     <TextView
-        android:id="@+id/plate_no_text_view_id"
+        android:id="@+id/area_text_view_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16dp"
-        android:text="@string/plate_num"
+        android:text="@string/area"
         android:textStyle="normal"
         android:layout_alignParentTop="true" />
 
     <TextView
-        android:id="@+id/violation_type_text_view_id"
+        android:id="@+id/date_time_park_text_view_id"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/plate_no_text_view_id"
+        android:layout_below="@id/area_text_view_id"
         android:layout_marginTop="1dip"
-        android:text="@string/violations"
+        android:text="@string/date_time_parking"
         android:textSize="14dp"
         android:textStyle="normal"/>
 </RelativeLayout>

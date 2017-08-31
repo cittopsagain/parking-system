@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (username.trim().length() > 0 && password.trim().length() > 0) {
                 login.doLogin(username, password);
             } else {
-                Toast.makeText(this, R.string.error_empty_fields_login, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.error_empty_fields, Toast.LENGTH_LONG).show();
             }
         }
     }

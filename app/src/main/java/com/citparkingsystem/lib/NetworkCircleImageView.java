@@ -27,7 +27,7 @@ import com.citparkingsystem.R;
  * Created by Dave Tolentin on 7/23/2017.
  */
 
-public class CircleImageView extends NetworkImageView {
+public class NetworkCircleImageView extends NetworkImageView {
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
 
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
@@ -64,16 +64,16 @@ public class CircleImageView extends NetworkImageView {
     private boolean mSetupPending;
     private boolean mBorderOverlay;
 
-    public CircleImageView(Context context) {
+    public NetworkCircleImageView(Context context) {
         super(context);
         init();
     }
 
-    public CircleImageView(Context context, AttributeSet attrs) {
+    public NetworkCircleImageView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
+    public NetworkCircleImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);

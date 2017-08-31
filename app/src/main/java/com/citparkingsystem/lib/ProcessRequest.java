@@ -3,24 +3,12 @@ package com.citparkingsystem.lib;
 import android.util.Log;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by Dave Tolentin on 7/16/2017.
@@ -40,6 +28,7 @@ public class ProcessRequest extends ServerAddress {
                 URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
+                Log.e(TAG, s);
                 listener.getSuccessResult(s);
             }
         }, new Response.ErrorListener() {
@@ -58,6 +47,7 @@ public class ProcessRequest extends ServerAddress {
                         }
                     }
                 } catch (Exception ex) {
+                    Log.e(TAG, ex.getMessage());
                     ex.printStackTrace();
                 }
 

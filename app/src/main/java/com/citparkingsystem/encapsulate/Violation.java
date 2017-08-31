@@ -9,6 +9,10 @@ public class Violation {
     public String plateNumber;
     public String violationType;
 
+    public Violation() {
+
+    }
+
     public String getPlateNumber() {
         return plateNumber;
     }

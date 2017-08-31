@@ -14,6 +14,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.citparkingsystem.lib.ParkingAreaHelper;
+import com.citparkingsystem.lib.SessionManager;
 import com.citparkingsystem.lib.VolleySingleton;
 import com.citparkingsystem.requests.Parking;
 
@@ -30,9 +31,7 @@ import java.util.concurrent.TimeoutException;
 public class ParkingAreaFragment extends Fragment {
 
     private final static String TAG = ParkingAreaFragment.class.getSimpleName();
-    private String parkingArea;
-    private Parking parking;
-    private String slots;
+    private int parkingArea;
 
     public ParkingAreaFragment() {
 
@@ -42,9 +41,12 @@ public class ParkingAreaFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            parkingArea = bundle.getString("keyParkingArea", "");
+            parkingArea = bundle.getInt("keyParkingArea", 0);
         }
-        parking = new Parking(getActivity());
+        /*if (parkingArea == "academic") {
+            Log.e(TAG, "EHERAFADf");
+        }
+        Log.e(TAG, "DFSDFSDFQE@#$WFSDF");*/
     }
 
     @Override

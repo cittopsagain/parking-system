@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +19,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.citparkingsystem.lib.SessionManager;
 import com.citparkingsystem.lib.VolleySingleton;
+import com.citparkingsystem.requests.Parking;
 
 /**
  * Created by Dave Tolentin on 7/23/2017.
@@ -71,7 +73,7 @@ public class DashboardActivity extends AppCompatActivity
         String fullName = sharedPreferences.getString("keyFirstName", "")+" "+
                 sharedPreferences.getString("keyLastName", "");
         txtFullName.setText(fullName);
-
+        String parkingArea = sharedPreferences.getString("keyParkingArea", "");
         displayView(0);
     }
 
@@ -96,6 +98,8 @@ public class DashboardActivity extends AppCompatActivity
         switch (position) {
             case 0:
                 title = getString(R.string.dashboard);
+                Parking p = new Parking(this);
+                p.getParkingSlots();
                 fragment = new MenuFragment();
                 break;
             case 1:
@@ -104,7 +108,7 @@ public class DashboardActivity extends AppCompatActivity
                 break;
             case 2:
                 title = getString(R.string.parking_history);
-                fragment = new ViolationsFragment();
+                fragment = new ParkingHistoryFragment();
                 break;
             case 3:
                     sessionManager.clearUserData();

@@ -1,14 +1,15 @@
 package com.citparkingsystem.requests;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.citparkingsystem.encapsulate.Violation;
+import com.citparkingsystem.lib.ParkingAreas;
 import com.citparkingsystem.lib.ProcessRequest;
 import com.citparkingsystem.lib.SessionManager;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,16 +24,12 @@ public class Parking {
     private Context context;
     private String key[] = {};
     private String value[] = {};
-    private SharedPreferences.Editor editor;
-    private SharedPreferences sharedPreferences;
 
     private final static String TAG = Parking.class.getSimpleName();
 
     public Parking(Context context) {
         processRequest = new ProcessRequest();
         sessionManager = new SessionManager(context);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        this.editor = sharedPreferences.edit();
         this.context = context;
     }
 
@@ -52,21 +49,43 @@ public class Parking {
         });
     }
 
-    public void saveViolation(String plateNumber, String violationType) {
+    public void addViolation(String plateNumber, String violationType, String whatArea,
+                              final Callback callback) {
+        key = new String[] {"plateNumber", "violationType", "whatParkingArea"};
+        value = new String[] {plateNumber, violationType, whatArea};
 
+        processRequest.sendRequest("addViolation", key, value,
+                new ProcessRequest.VolleyResponseListener<Object>() {
+            @Override
+            public void getSuccessResult(Object object) {
+                callback.successResponse(object);
+            }
+
+            @Override
+            public void getErrorResult(Object object) {
+                callback.errorResponse(object);
+            }
+        });
     }
 
-    public void getParkingSlots(final String parkingArea) {
-        key = new String[] {"whatParkingArea"};
-        value = new String[] {parkingArea};
+    public void getParkingSlots() {
         processRequest.sendRequest("getParkingSlots", key, value,
                 new ProcessRequest.VolleyResponseListener<Object>() {
             @Override
             public void getSuccessResult(Object object) {
-                try {
-                    JSONObject jsonObject = new JSONObject((String)object);
-                    sessionManager.parkingAreaAvailableSlots(jsonObject.getString("available_slots"));
+                 try {
+                    JSONArray jsonArray = new JSONArray((String)object);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String area = jsonObject.getString("area");
+                        if (area.equals("academic")) {
+                            String available = jsonObject.getString("available_slots");
+                            Log.e(TAG, "Academic available slots: "+available);
+                            sessionManager.parkingAreaAvailableSlotsAcademic(available);
+                        }
+                    }
                 } catch (JSONException e) {
+                    Log.e(TAG, "Exception: "+e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -78,20 +97,60 @@ public class Parking {
         });
     }
 
-    public void updateParkingAreaSlot(String slot, String whatParkingArea) {
+    public void updateParkingAreaSlot(final String slot, final int whatParkingArea,
+                                      final String index, final String what) {
         key = new String[] {"whatParkingArea", "slot"};
-        value = new String[] {whatParkingArea, slot};
+        value = new String[] {ParkingAreas.area[whatParkingArea].toString(), slot};
+
         processRequest.sendRequest("updateParkingAreaSlot", key, value,
                 new ProcessRequest.VolleyResponseListener<Object>() {
             @Override
             public void getSuccessResult(Object object) {
                 Log.e(TAG, (String) object);
-                Toast.makeText(context, (String) object, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Slot #"+index+" successfully set to "+what,
+                        Toast.LENGTH_LONG).show();
+                if (what == "occupied") {
+                    addToParkingHistory(index, ParkingAreas.area[whatParkingArea].toString());
+                }
             }
 
             @Override
             public void getErrorResult(Object object) {
                 Toast.makeText(context, (String) object, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void addToParkingHistory(String slot, String area) {
+        key = new String[] {"whatParkingArea", "slot"};
+        value = new String[] {area, slot};
+        processRequest.sendRequest("addToParkingHistory", key, value,
+                new ProcessRequest.VolleyResponseListener<Object>() {
+            @Override
+            public void getSuccessResult(Object object) {
+                Log.e(TAG, (String) object);
+            }
+
+            @Override
+            public void getErrorResult(Object object) {
+                Log.e(TAG, (String) object);
+            }
+        });
+    }
+
+    public void getParkingHistory(final Callback callback) {
+        processRequest.sendRequest("getParkingHistory", key, value,
+                new ProcessRequest.VolleyResponseListener<Object>() {
+            @Override
+            public void getSuccessResult(Object object) {
+                Log.e(TAG, (String) object);
+                callback.successResponse(object);
+            }
+
+            @Override
+            public void getErrorResult(Object object) {
+                callback.errorResponse(object);
+                Log.e(TAG, (String) object);
             }
         });
     }
