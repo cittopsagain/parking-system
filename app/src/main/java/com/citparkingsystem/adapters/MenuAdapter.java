@@ -63,11 +63,17 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Menu menu = menuList.get(position);
         holder.title.setText(menu.getName());
-        holder.count.setText(menu.getSlots()+" slots");
+        holder.count.setText(menu.getSlots()+" available out of "+menu.getMaxSlots()+" slots");
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callFragment.albumClick(position);
+                // Remove the condition if the client gives images of the remaining parking areas
+                // and its slots
+
+                // As of now only the assigned area of my client (Academic Area)
+                if (position == 0) {
+                    callFragment.albumClick(position);
+                }
             }
         });
         // Loading album cover using Glide library

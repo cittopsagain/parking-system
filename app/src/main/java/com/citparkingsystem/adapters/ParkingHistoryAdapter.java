@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.citparkingsystem.R;
 import com.citparkingsystem.encapsulate.ParkingArea;
@@ -78,11 +79,19 @@ public class ParkingHistoryAdapter extends BaseAdapter implements Filterable {
     public Filter getFilter() {
         if (valueFilter == null) {
             valueFilter = new ValueFilter();
+            valueFilter.context(this.context);
         }
         return valueFilter;
     }
 
     private class ValueFilter extends Filter {
+
+        Context context;
+        public Context context (Context context) {
+            this.context = context;
+            return null;
+        }
+
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
@@ -116,6 +125,10 @@ public class ParkingHistoryAdapter extends BaseAdapter implements Filterable {
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             parkingAreas = (ArrayList<ParkingArea>) results.values;
+            if (parkingAreas.size() == 0) {
+                Toast.makeText(this.context, "No results found for "+constraint+"!",
+                        Toast.LENGTH_SHORT).show();
+            }
             notifyDataSetChanged();
         }
     }

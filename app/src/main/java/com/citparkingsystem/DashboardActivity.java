@@ -12,11 +12,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.citparkingsystem.lib.ServerAddress;
 import com.citparkingsystem.lib.SessionManager;
 import com.citparkingsystem.lib.VolleySingleton;
 import com.citparkingsystem.requests.Parking;
@@ -27,6 +29,8 @@ import com.citparkingsystem.requests.Parking;
 
 public class DashboardActivity extends AppCompatActivity
         implements DrawerFragment.FragmentDrawerListener, View.OnClickListener {
+
+    private ServerAddress serverAddress;
 
     private static final String TAG = DashboardActivity.class.getSimpleName();
     private SharedPreferences sharedPreferences;
@@ -62,17 +66,30 @@ public class DashboardActivity extends AppCompatActivity
             imageLoader = VolleySingleton.getInstance().getImageLoader();
         }
 
-        if (!sessionManager.isLoggedIn()) {
+        serverAddress = new ServerAddress();
+
+        /*if (!sessionManager.isLoggedIn()) {
+            logout();
+        }*/
+        if (!sessionManager.isConnected()) {
+            sessionManager.clearUserData();
             logout();
         }
 
         networkImageView = (NetworkImageView) findViewById(R.id.user_profile_circle_image_view_id);
-        networkImageView.setImageUrl(sharedPreferences.getString("keyUserProfile", ""),
-                                        imageLoader);
+        /*networkImageView.setImageUrl(sharedPreferences.getString("keyUserProfile", ""),
+                                        imageLoader);*/
+        /*networkImageView.setImageUrl("http://"+serverAddress.IP+
+                serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/default.jpg", imageLoader);*/
 
-        String fullName = sharedPreferences.getString("keyFirstName", "")+" "+
-                sharedPreferences.getString("keyLastName", "");
-        txtFullName.setText(fullName);
+        networkImageView.setImageUrl("http://"+serverAddress.IP+"/"+serverAddress.PACKAGE+
+                "images/default.jpg", imageLoader);
+
+        Log.e(TAG, "http://"+serverAddress.IP+
+                        serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/default.jpg");
+        /*String fullName = sharedPreferences.getString("keyFirstName", "")+" "+
+                sharedPreferences.getString("keyLastName", "");*/
+        txtFullName.setText("Welcome Guest!");
         String parkingArea = sharedPreferences.getString("keyParkingArea", "");
         displayView(0);
     }
@@ -111,8 +128,10 @@ public class DashboardActivity extends AppCompatActivity
                 fragment = new ParkingHistoryFragment();
                 break;
             case 3:
-                    sessionManager.clearUserData();
-                    logout();
+                    /*sessionManager.clearUserData();
+                    logout();*/
+                sessionManager.clearUserData();
+                this.finishAffinity();
                 break;
 
             default:
@@ -129,7 +148,8 @@ public class DashboardActivity extends AppCompatActivity
     }
 
     private void logout() {
-        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+        // Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+        Intent i = new Intent(getApplicationContext(), SplashActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
     }

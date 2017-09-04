@@ -1,5 +1,7 @@
 package com.citparkingsystem;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -10,12 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.citparkingsystem.adapters.MenuAdapter;
 import com.citparkingsystem.encapsulate.Menu;
+import com.citparkingsystem.lib.ParkingAreas;
+import com.citparkingsystem.lib.SessionManager;
+import com.citparkingsystem.lib.StringHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +37,8 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
     private List<Menu> albumList;
     private RecyclerView recyclerView;
     private MenuAdapter adapter;
+    private SessionManager sessionManager;
+    private SharedPreferences sharedPreferences;
 
     public MenuFragment() {
 
@@ -52,6 +60,9 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
         View rootView = inflater.inflate(R.layout.fragment_menu, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 
+        sessionManager = new SessionManager(this.getActivity().getApplicationContext());
+        sharedPreferences = this.getActivity().getSharedPreferences("CIT_PARKING_SYSTEM",
+                Context.MODE_PRIVATE);
         albumList = new ArrayList<>();
         adapter = new MenuAdapter(getActivity(), albumList, this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -59,6 +70,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        Log.e(TAG, ""+sharedPreferences.getString("keySlotsAcademic", "").split(",").length);
 
         prepareAlbums();
 
@@ -118,7 +130,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onClick(View view) {
-
+        
     }
 
     /**
@@ -132,20 +144,25 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
                 R.drawable.ic_academic_area,
                 R.drawable.ic_academic_area
         };
-
-        Menu a = new Menu("Academic Area", 13, covers[0]);
+        String[] academicSlots = sharedPreferences.getString("keySlotsAcademic", "").split(",");
+        Menu a = new Menu(StringHelper.toTheUpperCaseSingle(ParkingAreas.area[0].toString().trim())
+                +" area", academicSlots[0] == "" ? 0 : academicSlots.length, covers[0], 61);
         albumList.add(a);
 
-        a = new Menu("Area 1", 8, covers[1]);
+        a = new Menu(StringHelper.toTheUpperCaseSingle(ParkingAreas.area[1].toString().trim()),
+                8, covers[1], 10);
         albumList.add(a);
 
-        a = new Menu("Area 2", 11, covers[2]);
+        a = new Menu(StringHelper.toTheUpperCaseSingle(ParkingAreas.area[2].toString().trim()),
+                11, covers[2], 20);
         albumList.add(a);
 
-        a = new Menu("Area 3", 12, covers[3]);
+        a = new Menu(StringHelper.toTheUpperCaseSingle(ParkingAreas.area[3].toString().trim()),
+                12, covers[3], 30);
         albumList.add(a);
 
-        a = new Menu("Area 4", 14, covers[4]);
+        a = new Menu(StringHelper.toTheUpperCaseSingle(ParkingAreas.area[4].toString().trim()),
+                14, covers[4], 40);
         albumList.add(a);
 
         adapter.notifyDataSetChanged();

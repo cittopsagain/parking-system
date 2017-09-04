@@ -16,7 +16,7 @@
         <provider
             android:name=".lib.SuggestionProvider"
             android:authorities="com.citparkingsystem.lib.SuggestionProvider" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

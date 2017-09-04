@@ -8,9 +8,11 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.citparkingsystem.R;
 import com.citparkingsystem.encapsulate.Violation;
+import com.citparkingsystem.lib.StringHelper;
 
 import java.util.ArrayList;
 
@@ -38,6 +40,7 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
     public Filter getFilter() {
         if (valueFilter == null) {
             valueFilter = new ValueFilter();
+            valueFilter.context(this.context);
         }
         return valueFilter;
     }
@@ -74,14 +77,26 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
 
         TextView txtPlateNo = (TextView) view.findViewById(R.id.plate_no_text_view_id);
         TextView txtViolationType = (TextView) view.findViewById(R.id.violation_type_text_view_id);
+        TextView txtParkingArea = (TextView) view.findViewById(R.id.parking_area_text_view_id);
+        TextView txtDateTimeViolation = (TextView) view.findViewById(
+                R.id.date_time_violation_text_view_id);
 
         txtPlateNo.setText(violation.getPlateNumber());
         txtViolationType.setText(violation.getViolationType());
+        txtParkingArea.setText(StringHelper.toTheUpperCaseSingle(violation.getParkingArea().
+                trim()+" area"));
+        txtDateTimeViolation.setText(violation.getViolationDate());
 
         return view;
     }
 
     private class ValueFilter extends Filter {
+        Context context;
+        public Context context (Context context) {
+            this.context = context;
+            return null;
+        }
+
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
@@ -115,6 +130,10 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             violationList = (ArrayList<Violation>) results.values;
+            if (violationList.size() == 0) {
+                Toast.makeText(this.context, "No results found for "+constraint+"!",
+                        Toast.LENGTH_SHORT).show();
+            }
             notifyDataSetChanged();
         }
     }

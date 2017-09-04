@@ -1,6 +1,9 @@
 package com.citparkingsystem;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
@@ -8,15 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.citparkingsystem.adapters.ParkingHistoryAdapter;
-import com.citparkingsystem.adapters.ViolationAdapter;
 import com.citparkingsystem.encapsulate.ParkingArea;
-import com.citparkingsystem.encapsulate.Violation;
+import com.citparkingsystem.lib.StringHelper;
 import com.citparkingsystem.requests.Parking;
 
 import org.json.JSONArray;
@@ -35,6 +38,7 @@ public class ParkingHistoryFragment extends Fragment {
     private ParkingHistoryAdapter parkingHistoryAdapter;
     private ArrayList<ParkingArea> parkingAreas = new ArrayList<ParkingArea>();
     private ListView listView;
+    private AlertDialog.Builder builder;
 
     private final static String TAG = ParkingHistoryFragment.class.getSimpleName();
 
@@ -45,6 +49,12 @@ public class ParkingHistoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         parking = new Parking(getActivity());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(getActivity(),
+                    android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getActivity());
+        }
     }
 
     @Override
@@ -81,6 +91,25 @@ public class ParkingHistoryFragment extends Fragment {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_advanced_search) {
+            builder.setTitle("Advanced Search").setPositiveButton("Search",
+                    new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+    }
+
     class executeTask extends AsyncTask<String, String, String> {
 
         @Override
@@ -99,7 +128,8 @@ public class ParkingHistoryFragment extends Fragment {
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 ParkingArea parkingArea = new ParkingArea();
-                                parkingArea.setArea(jsonObject.getString("area"));
+                                parkingArea.setArea(StringHelper.toTheUpperCaseSingle(
+                                        jsonObject.getString("area").trim()+" area"));
                                 parkingArea.setDateTimePark(jsonObject.getString("date_time_park"));
                                 parkingAreas.add(parkingArea);
                             }

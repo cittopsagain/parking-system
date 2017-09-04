@@ -20,8 +20,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.citparkingsystem.adapters.ViolationAdapter;
+import com.citparkingsystem.encapsulate.ParkingArea;
 import com.citparkingsystem.encapsulate.Violation;
 import com.citparkingsystem.lib.ParkingAreas;
+import com.citparkingsystem.lib.StringHelper;
 import com.citparkingsystem.requests.Parking;
 
 import org.json.JSONArray;
@@ -101,6 +103,12 @@ public class ViolationsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_add_violation) {
+            ArrayList<String> u = new ArrayList<>();
+            for (int i = 0; i < ParkingAreas.area.length; i++) {
+                u.add(i, StringHelper.toTheUpperCaseSingle(ParkingAreas.area[i].toString().trim()));
+            }
+            CharSequence[] upperCaseArea = u.toArray(new CharSequence[u.size()]);
+
             final ArrayList selectedArea = new ArrayList();
 
             LinearLayout layout = new LinearLayout(getActivity());
@@ -114,9 +122,9 @@ public class ViolationsFragment extends Fragment {
 
             layout.addView(txtPlateNum);
             layout.addView(txtViolationType);
-            builder.setTitle("Alert")
+            builder.setTitle("Enter Violation")
                     .setView(layout)
-                    .setSingleChoiceItems(ParkingAreas.area, 0, new DialogInterface.OnClickListener() {
+                    .setSingleChoiceItems(upperCaseArea, 0, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             selectedArea.add(0, ParkingAreas.area[which]);
@@ -181,6 +189,8 @@ public class ViolationsFragment extends Fragment {
                                 Violation violation = new Violation();
                                 violation.setPlateNumber(jsonObject.getString("plate_number"));
                                 violation.setViolationType(jsonObject.getString("violation_type"));
+                                violation.setParkingArea(jsonObject.getString("area"));
+                                violation.setViolationDate(jsonObject.getString("violation_date"));
                                 violationList.add(violation);
                             }
                             violationAdapter = new ViolationAdapter(getActivity(), violationList);

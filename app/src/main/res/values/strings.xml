@@ -9,7 +9,8 @@
     <string name="nav_item_dashboard">Dashboard</string>
     <string name="nav_item_listing_screen_violation">Violations</string>
     <string name="nav_item_listing_screen_parking_history">Parking History</string>
-    <string name="nav_item_logout">Logout</string>
+    <!-- <string name="nav_item_logout">Logout</string>-->
+    <string name="nav_item_exit">Exit</string>
     <string name="full_name">Full Name</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
@@ -18,28 +19,31 @@
     <string name="violation_type">Violation Type</string>
     <string name="dashboard">Dashboard</string>
     <string name="violations">Violations</string>
+    <string name="date_time_violation">Date Time Violation</string>
     <string name="parking_history">Parking History</string>
     <string name="custom_search">Custom Search</string>
     <string name="settings">Settings</string>
     <string name="search">Search</string>
     <string name="add">Add Violation</string>
+    <string name="filter">Advanced Search</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
-    <string name="enter_plate_num">Enter Plate Number</string>
-    <string name="enter_violation">Enter Violation</string>
+    <string name="enter_plate_num">Plate Number</string>
+    <string name="enter_violation">Violation</string>
     <string name="success_save">Save Success</string>
     <string name="plate_num">Plate Number</string>
     <string name="area">Area</string>
     <string name="date_time_parking">Date and Time Park</string>
     <string name="academic_area">Academic Area</string>
+    <string name="please_wait">Please wait while connecting to server...</string>
 
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_dashboard</item>
         <item>@string/nav_item_listing_screen_violation</item>
         <item>@string/nav_item_listing_screen_parking_history</item>
-        <item>@string/nav_item_logout</item>
+        <item>@string/nav_item_exit</item>
     </string-array>
 
 </resources>

@@ -5,5 +5,5 @@ package com.citparkingsystem.lib;
  */
 
 public class ParkingAreas {
-    public static CharSequence[] area = {"academic "," area1 "," area2 ", "area3", "area4"};
+    public static CharSequence[] area = {"academic ", " area1 ", " area2 ", "area3", "area4"};
 }

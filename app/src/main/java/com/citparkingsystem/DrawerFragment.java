@@ -106,7 +106,11 @@ public class DrawerFragment extends Fragment {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                getActivity().invalidateOptionsMenu();
+                try {
+                    getActivity().invalidateOptionsMenu();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
 
             @Override

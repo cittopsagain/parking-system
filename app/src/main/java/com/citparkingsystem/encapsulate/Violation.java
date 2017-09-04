@@ -8,6 +8,24 @@ public class Violation {
 
     public String plateNumber;
     public String violationType;
+    public String parkingArea;
+    public String violationDate;
+
+    public String getParkingArea() {
+        return parkingArea;
+    }
+
+    public void setParkingArea(String parkingArea) {
+        this.parkingArea = parkingArea;
+    }
+
+    public String getViolationDate() {
+        return violationDate;
+    }
+
+    public void setViolationDate(String violationDate) {
+        this.violationDate = violationDate;
+    }
 
     public Violation() {
 

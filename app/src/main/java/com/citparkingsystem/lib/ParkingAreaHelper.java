@@ -99,19 +99,25 @@ public class ParkingAreaHelper extends View {
         display.getSize(size);
         /*int width = size.x;
         int height = size.y;*/
-        Log.e(TAG, "Width: "+width+" Height: "+height);
+        Log.e(TAG, "Width: "+width+" Height: "+DeviceHelper.getScreenHeight());
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
         canvas.drawBitmap(scaledBitmap, 0, 0, null);
 
+        float radius = dipToPixels(this.context, 5);
         // Upper slot
         float upperStartX = 0;
         float upperStartY = 0;
         if (width == 1440 && height == (2392 - actionBarSize)) {
             upperStartX = 190;
             upperStartY = 120;
+        } else if (width == 480 && height == (800 - actionBarSize)) {
+            upperStartX = 70;
+            upperStartY = 45;
+        } else if (width == 768 && height == (1184 - actionBarSize)) {
+            upperStartX = 50;
+            upperStartY = 60;
         }
 
-        float radius = dipToPixels(this.context, 5);
         int vacant = Color.GREEN;
         int occupied = Color.RED;
         for (int i = 1; i <= 5; i++) {
@@ -141,8 +147,16 @@ public class ParkingAreaHelper extends View {
             }
 
             canvas.drawCircle(x, y, radius, circle);
-            upperStartX += 100;
-            upperStartY += 17;
+            if (width == 1440 && height == (2392 - actionBarSize)) {
+                upperStartX += 100;
+                upperStartY += 17;
+            } else if (width == 480 && height == (800 - actionBarSize)) {
+                upperStartX += 40;
+                upperStartY += 7;
+            } else if (width == 768 && height == (1184 - actionBarSize)) {
+                upperStartX += 80;
+                upperStartY += 13;
+            }
         }
         Log.e(TAG, "Last Y: "+(height - upperStartY));
         Log.e(TAG, "Upper start y: "+upperStartY);
@@ -152,6 +166,12 @@ public class ParkingAreaHelper extends View {
         if (width == 1440 && height == (2392 - actionBarSize)) {
             belowUpperStartX = dipToPixels(this.context, 60);
             belowUpperStartY = dipToPixels(this.context, 139);
+        } else if (width == 480 && height == (800 - actionBarSize)) {
+            belowUpperStartX = dipToPixels(this.context, 60);
+            belowUpperStartY = dipToPixels(this.context, 170);
+        } else if (width == 768 && height == (1184 - actionBarSize)) {
+            belowUpperStartX = dipToPixels(this.context, 30);
+            belowUpperStartY = dipToPixels(this.context, 124);
         }
 
         for (int i = 6; i <= 11; i++) {
@@ -182,8 +202,16 @@ public class ParkingAreaHelper extends View {
             }
 
             canvas.drawCircle(x, y, radius, circle);
-            belowUpperStartX += dipToPixels(this.context, 30);
-            belowUpperStartY -= dipToPixels(this.context, (float) 10.5);
+            if (width == 1440 && height == (2392 - actionBarSize)) {
+                belowUpperStartX += dipToPixels(this.context, 30);
+                belowUpperStartY -= dipToPixels(this.context, (float) 10.5);
+            } else if (width == 480 && height == (800 - actionBarSize)) {
+                belowUpperStartX += dipToPixels(this.context, 35);
+                belowUpperStartY -= dipToPixels(this.context, (float) 11.5);
+            } else if (width == 768 && height == (1184 - actionBarSize)) {
+                belowUpperStartX += dipToPixels(this.context, 32);
+                belowUpperStartY -= dipToPixels(this.context, (float) 9.5);
+            }
         }
         Log.e(TAG, "Last X: "+belowUpperStartX);
         // Middle slot
@@ -192,6 +220,12 @@ public class ParkingAreaHelper extends View {
         if (width == 1440 && height == (2392 - actionBarSize)) {
             middleUpperStartX = dipToPixels(this.context, 235);
             middleUpperStartY = dipToPixels(this.context, 120);
+        } else if (width == 480 && height == (800 - actionBarSize)) {
+            middleUpperStartX = dipToPixels(this.context, 270);
+            middleUpperStartY = dipToPixels(this.context, 120);
+        } else if (width == 768 && height == (1184 - actionBarSize)) {
+            middleUpperStartX = dipToPixels(this.context, 216);
+            middleUpperStartY = dipToPixels(this.context, 80);
         }
 
         for (int i = 12; i <= 15; i++) {
@@ -221,12 +255,25 @@ public class ParkingAreaHelper extends View {
             }
 
             canvas.drawCircle(x, y, radius, circle);
-            middleUpperStartX += dipToPixels(this.context, 7);
-            middleUpperStartY += dipToPixels(this.context, 25);
+            if (width == 1440 && height == (2392 - actionBarSize)) {
+                middleUpperStartX += dipToPixels(this.context, 7);
+                middleUpperStartY += dipToPixels(this.context, 25);
+            } else if (width == 480 && height == (800 - actionBarSize)) {
+                middleUpperStartX += dipToPixels(this.context, 10);
+                middleUpperStartY += dipToPixels(this.context, 40);
+            } else if (width == 768 && height == (1184 - actionBarSize)) {
+                middleUpperStartX += dipToPixels(this.context, 8);
+                middleUpperStartY += dipToPixels(this.context, 30);
+            }
         }
         if (width == 1440 && height == (2392 - actionBarSize)) {
             middleUpperStartY += 50;
             middleUpperStartX -= 24;
+        } else if (width == 480 && height == (800 - actionBarSize)) {
+            middleUpperStartY += 3;
+            middleUpperStartX -= 16;
+        } else if (width == 768 && height == (1184 - actionBarSize)) {
+            middleUpperStartX -= 16;
         }
         for (int i = 16; i <= 24; i++) {
             float x = middleUpperStartX * ((float) width / (float) scaledBitmap.getWidth());
@@ -255,8 +302,16 @@ public class ParkingAreaHelper extends View {
             }
 
             canvas.drawCircle(x, y, radius, circle);
-            middleUpperStartX += dipToPixels(this.context, 6);
-            middleUpperStartY += dipToPixels(this.context, 23);
+            if (width == 1440 && height == (2392 - actionBarSize)) {
+                middleUpperStartX += dipToPixels(this.context, 6);
+                middleUpperStartY += dipToPixels(this.context, 23);
+            } else if (width == 480 && height == (800 - actionBarSize)) {
+                middleUpperStartX += dipToPixels(this.context, (float) 6.5);
+                middleUpperStartY += dipToPixels(this.context, 28);
+            } else if (width == 768 && height == (1184 - actionBarSize)) {
+                middleUpperStartX += dipToPixels(this.context, (float) 5.5);
+                middleUpperStartY += dipToPixels(this.context, 20);
+            }
         }
 
         // Left side slot
@@ -265,9 +320,15 @@ public class ParkingAreaHelper extends View {
         if (width == 1440 && height == (2392 - actionBarSize)) {
             leftUpperStartX = dipToPixels(this.context, 116);
             leftUpperStartY = dipToPixels(this.context, 510);
+        } else if (width == 480 && height == (800 - actionBarSize)) {
+            leftUpperStartX = dipToPixels(this.context, 130);
+            leftUpperStartY = dipToPixels(this.context, 605);
+        } else if (width == 768 && height == (1184 - actionBarSize)) {
+            leftUpperStartX = dipToPixels(this.context, 110);
+            leftUpperStartY = dipToPixels(this.context, 438);
         }
 
-        for (int i = 34; i <= 47; i++) {
+        for (int i = 25; i <= 38; i++) {
             float x = leftUpperStartX * ((float) width / (float) scaledBitmap.getWidth());
             float y = leftUpperStartY * ((float) height / (float) scaledBitmap.getHeight());
             boolean flag = false;
@@ -294,8 +355,16 @@ public class ParkingAreaHelper extends View {
             }
 
             canvas.drawCircle(x, y, radius, circle);
-            leftUpperStartX += dipToPixels(this.context, 15);
-            leftUpperStartY -= dipToPixels(this.context, 5);
+            if (width == 1440 && height == (2392 - actionBarSize)) {
+                leftUpperStartX += dipToPixels(this.context, 15);
+                leftUpperStartY -= dipToPixels(this.context, 5);
+            } else if (width == 480 && height == (800 - actionBarSize)) {
+                leftUpperStartX += dipToPixels(this.context, 17);
+                leftUpperStartY -= dipToPixels(this.context, (float) 5.5);
+            } else if (width == 768 && height == (1184 - actionBarSize)) {
+                leftUpperStartX += dipToPixels(this.context, 14);
+                leftUpperStartY -= dipToPixels(this.context, (float) 4.5);
+            }
         }
 
         // Left side slot
@@ -304,9 +373,15 @@ public class ParkingAreaHelper extends View {
         if (width == 1440 && height == (2392 - actionBarSize)) {
             belowLeftUpperStartX = dipToPixels(this.context, 140);
             belowLeftUpperStartY = dipToPixels(this.context, 590);
+        } else if (width == 480 && height == (800 - actionBarSize)) {
+            belowLeftUpperStartX = dipToPixels(this.context, 154);
+            belowLeftUpperStartY = dipToPixels(this.context, 708);
+        } else if (width == 768 && height == (1184 - actionBarSize)) {
+            belowLeftUpperStartX = dipToPixels(this.context, 130);
+            belowLeftUpperStartY = dipToPixels(this.context, 506);
         }
 
-        for (int i = 48; i <= 61; i++) {
+        for (int i = 39; i <= 52; i++) {
             float x = belowLeftUpperStartX * ((float) width / (float) scaledBitmap.getWidth());
             float y = belowLeftUpperStartY * ((float) height / (float) scaledBitmap.getHeight());
             boolean flag = false;
@@ -333,8 +408,16 @@ public class ParkingAreaHelper extends View {
             }
 
             canvas.drawCircle(x, y, radius, circle);
-            belowLeftUpperStartX += dipToPixels(this.context, 15);
-            belowLeftUpperStartY -= dipToPixels(this.context, 5);
+            if (width == 1440 && height == (2392 - actionBarSize)) {
+                belowLeftUpperStartX += dipToPixels(this.context, 15);
+                belowLeftUpperStartY -= dipToPixels(this.context, 5);
+            } else if (width == 480 && height == (800 - actionBarSize)) {
+                belowLeftUpperStartX += dipToPixels(this.context, 17);
+                belowLeftUpperStartY -= dipToPixels(this.context, (float) 6);
+            } else if (width == 768 && height == (1184 - actionBarSize)) {
+                belowLeftUpperStartX += dipToPixels(this.context, 14);
+                belowLeftUpperStartY -= dipToPixels(this.context, (float) 4.5);
+            }
         }
 
         // Left side slot
@@ -343,9 +426,15 @@ public class ParkingAreaHelper extends View {
         if (width == 1440 && height == (2392 - actionBarSize)) {
             rightSideUpperStartX = dipToPixels(this.context, 332);
             rightSideUpperStartY = dipToPixels(this.context, 280);
+        } else if (width == 480 && height == (800 - actionBarSize)) {
+            rightSideUpperStartX = dipToPixels(this.context, 385);
+            rightSideUpperStartY = dipToPixels(this.context, 320);
+        } else if (width == 768 && height == (1184 - actionBarSize)) {
+            rightSideUpperStartX = dipToPixels(this.context, 310);
+            rightSideUpperStartY = dipToPixels(this.context, 230);
         }
 
-        for (int i = 62; i <= 70; i++) {
+        for (int i = 53; i <= 61; i++) {
             float x = rightSideUpperStartX * ((float) width / (float) scaledBitmap.getWidth());
             float y = rightSideUpperStartY * ((float) height / (float) scaledBitmap.getHeight());
             boolean flag = false;
