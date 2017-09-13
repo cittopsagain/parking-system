@@ -70,8 +70,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
                 // Remove the condition if the client gives images of the remaining parking areas
                 // and its slots
 
-                // As of now only the assigned area of my client (Academic Area)
-                if (position == 0) {
+                // As of now only the assigned area of my client (Highschool Area)
+                if (position == 3) {
                     callFragment.albumClick(position);
                 }
             }

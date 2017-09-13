@@ -43,10 +43,6 @@ public class ParkingAreaFragment extends Fragment {
         if (bundle != null) {
             parkingArea = bundle.getInt("keyParkingArea", 0);
         }
-        /*if (parkingArea == "academic") {
-            Log.e(TAG, "EHERAFADf");
-        }
-        Log.e(TAG, "DFSDFSDFQE@#$WFSDF");*/
     }
 
     @Override

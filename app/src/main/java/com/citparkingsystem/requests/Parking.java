@@ -1,5 +1,6 @@
 package com.citparkingsystem.requests;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 
 public class Parking {
 
+    private ProgressDialog pDialog;
     private ProcessRequest processRequest;
     private SessionManager sessionManager;
     private Context context;
@@ -37,6 +39,41 @@ public class Parking {
         processRequest.sendRequest("getViolations", key, value,
                 new ProcessRequest.VolleyResponseListener<Object>() {
 
+            @Override
+            public void getSuccessResult(Object object) {
+                callback.successResponse(object);
+            }
+
+            @Override
+            public void getErrorResult(Object object) {
+                callback.errorResponse(object);
+            }
+        });
+    }
+
+    public void getSelectedViolation(int id, final Callback callback) {
+        key = new String[] {"id"};
+        value = new String[] {String.valueOf(id)};
+        processRequest.sendRequest("getSelectedViolation", key, value,
+                new ProcessRequest.VolleyResponseListener<Object>() {
+            @Override
+            public void getSuccessResult(Object object) {
+                callback.successResponse(object);
+            }
+
+            @Override
+            public void getErrorResult(Object object) {
+                callback.errorResponse(object);
+            }
+        });
+    }
+
+    public void updateViolation(int id, String pNumber, String violation, String area,
+                                final Callback callback) {
+        key = new String[] {"id", "plateNumber", "violation", "area"};
+        value = new String [] {String.valueOf(id), pNumber, violation, area};
+        processRequest.sendRequest("updateViolation", key, value,
+                new ProcessRequest.VolleyResponseListener<Object>() {
             @Override
             public void getSuccessResult(Object object) {
                 callback.successResponse(object);
@@ -69,6 +106,11 @@ public class Parking {
     }
 
     public void getParkingSlots() {
+        pDialog = new ProgressDialog(this.context);
+        pDialog.setMessage("Loading...");
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(true);
+        pDialog.show();
         processRequest.sendRequest("getParkingSlots", key, value,
                 new ProcessRequest.VolleyResponseListener<Object>() {
             @Override
@@ -78,20 +120,22 @@ public class Parking {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String area = jsonObject.getString("area");
-                        if (area.equals("academic")) {
+                        if (area.equals("Highschool Area")) {
                             String available = jsonObject.getString("available_slots");
-                            Log.e(TAG, "Academic available slots: "+available);
-                            sessionManager.parkingAreaAvailableSlotsAcademic(available);
+                            Log.e(TAG, "Hs slots: "+available);
+                            sessionManager.parkingAreaAvailableSlotsHs(available);
                         }
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "Exception: "+e.getMessage());
                     e.printStackTrace();
                 }
+                pDialog.dismiss();
             }
 
             @Override
             public void getErrorResult(Object object) {
+                pDialog.dismiss();
                 Toast.makeText(context, (String) object, Toast.LENGTH_LONG).show();
             }
         });

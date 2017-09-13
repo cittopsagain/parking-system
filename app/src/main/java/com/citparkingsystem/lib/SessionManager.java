@@ -38,8 +38,8 @@ public class SessionManager extends ServerAddress {
         editor.apply();
     }
 
-    public void parkingAreaAvailableSlotsAcademic(String slots) {
-        editor.putString("keySlotsAcademic", slots);
+    public void parkingAreaAvailableSlotsHs(String slots) {
+        editor.putString("keyHsSlots", slots);
         editor.apply();
     }
 

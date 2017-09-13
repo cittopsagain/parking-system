@@ -33,8 +33,10 @@
     <string name="enter_plate_num">Plate Number</string>
     <string name="enter_violation">Violation</string>
     <string name="success_save">Save Success</string>
+    <string name="success_edit">Edit Success</string>
     <string name="plate_num">Plate Number</string>
     <string name="area">Area</string>
+    <string name="loading">Loading...</string>
     <string name="date_time_parking">Date and Time Park</string>
     <string name="academic_area">Academic Area</string>
     <string name="please_wait">Please wait while connecting to server...</string>
@@ -42,7 +44,7 @@
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_dashboard</item>
         <item>@string/nav_item_listing_screen_violation</item>
-        <item>@string/nav_item_listing_screen_parking_history</item>
+        <!--<item>@string/nav_item_listing_screen_parking_history</item>-->
         <item>@string/nav_item_exit</item>
     </string-array>
 

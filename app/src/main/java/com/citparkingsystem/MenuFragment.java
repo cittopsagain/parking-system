@@ -46,6 +46,14 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            ArrayList slots = bundle.getStringArrayList("slots");
+            Log.e(TAG, "Slots: "+slots.indexOf(0));
+        }
+        sessionManager = new SessionManager(this.getActivity().getApplicationContext());
+        sharedPreferences = this.getActivity().getApplicationContext().getSharedPreferences("CIT_PARKING_SYSTEM",
+                Context.MODE_PRIVATE);
     }
 
     @Override
@@ -59,10 +67,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_menu, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-
-        sessionManager = new SessionManager(this.getActivity().getApplicationContext());
-        sharedPreferences = this.getActivity().getSharedPreferences("CIT_PARKING_SYSTEM",
-                Context.MODE_PRIVATE);
         albumList = new ArrayList<>();
         adapter = new MenuAdapter(getActivity(), albumList, this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -79,7 +83,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void albumClick(int position) {
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(R.string.academic_area);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(ParkingAreas.area[3]);
         ParkingAreaFragment parkingAreaFragment = new ParkingAreaFragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -130,39 +134,36 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onClick(View view) {
-        
+
     }
 
     /**
      * Adding few albums for testing
      */
     private void prepareAlbums() {
-        int[] covers = new int[]{
-                R.drawable.ic_academic_area,
-                R.drawable.ic_academic_area,
-                R.drawable.ic_academic_area,
-                R.drawable.ic_academic_area,
-                R.drawable.ic_academic_area
+        int[] covers = new int[] {
+                R.drawable.ic_no_image_available,
+                R.drawable.ic_no_image_available,
+                R.drawable.ic_no_image_available,
+                R.drawable.ic_hs_area_,
+                R.drawable.ic_no_image_available
         };
-        String[] academicSlots = sharedPreferences.getString("keySlotsAcademic", "").split(",");
-        Menu a = new Menu(StringHelper.toTheUpperCaseSingle(ParkingAreas.area[0].toString().trim())
-                +" area", academicSlots[0] == "" ? 0 : academicSlots.length, covers[0], 61);
+
+        Menu a = new Menu(ParkingAreas.area[0].toString().trim(), 8, covers[0], 61);
         albumList.add(a);
 
-        a = new Menu(StringHelper.toTheUpperCaseSingle(ParkingAreas.area[1].toString().trim()),
-                8, covers[1], 10);
+        a = new Menu(ParkingAreas.area[1].toString().trim(), 8, covers[1], 10);
         albumList.add(a);
 
-        a = new Menu(StringHelper.toTheUpperCaseSingle(ParkingAreas.area[2].toString().trim()),
-                11, covers[2], 20);
+        a = new Menu(ParkingAreas.area[2].toString().trim(), 11, covers[2], 20);
         albumList.add(a);
 
-        a = new Menu(StringHelper.toTheUpperCaseSingle(ParkingAreas.area[3].toString().trim()),
-                12, covers[3], 30);
+        String[] hsSlots = sharedPreferences.getString("keyHsSlots", "").split(",");
+        a = new Menu(ParkingAreas.area[3].toString().trim(), hsSlots[0] == "" ? 0 : hsSlots.length,
+                covers[3], 61);
         albumList.add(a);
 
-        a = new Menu(StringHelper.toTheUpperCaseSingle(ParkingAreas.area[4].toString().trim()),
-                14, covers[4], 40);
+        a = new Menu(ParkingAreas.area[4].toString().trim(), 14, covers[4], 40);
         albumList.add(a);
 
         adapter.notifyDataSetChanged();

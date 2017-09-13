@@ -1,6 +1,7 @@
 package com.citparkingsystem.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,8 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
         Violation violation = violationList.get(i);
 
         TextView txtPlateNo = (TextView) view.findViewById(R.id.plate_no_text_view_id);
+        Typeface font = Typeface.createFromAsset(this.context.getAssets(), "fonts/Roboto-Thin.ttf");
+        // txtPlateNo.setTypeface(font);
         TextView txtViolationType = (TextView) view.findViewById(R.id.violation_type_text_view_id);
         TextView txtParkingArea = (TextView) view.findViewById(R.id.parking_area_text_view_id);
         TextView txtDateTimeViolation = (TextView) view.findViewById(
@@ -83,8 +86,7 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
 
         txtPlateNo.setText(violation.getPlateNumber());
         txtViolationType.setText(violation.getViolationType());
-        txtParkingArea.setText(StringHelper.toTheUpperCaseSingle(violation.getParkingArea().
-                trim()+" area"));
+        txtParkingArea.setText(violation.getParkingArea());
         txtDateTimeViolation.setText(violation.getViolationDate());
 
         return view;
@@ -107,13 +109,15 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
                     if ((mStringFilterList.get(i).getPlateNumber().toUpperCase())
                             .contains(constraint.toString().toUpperCase()) ||
                             (mStringFilterList.get(i).getViolationType().toUpperCase())
-                            .contains(constraint.toString().toUpperCase())) {
-
+                            .contains(constraint.toString().toUpperCase()) ||
+                            (mStringFilterList.get(i).getParkingArea().toUpperCase())
+                                    .contains(constraint.toString().toUpperCase())
+                            ) {
                         Violation violation = new Violation();
-                        violation.setPlateNumber(mStringFilterList.get(i)
-                                .getPlateNumber());
-                        violation.setViolationType(mStringFilterList.get(i)
-                                .getViolationType());
+                        violation.setParkingArea(mStringFilterList.get(i).getParkingArea());
+                        violation.setPlateNumber(mStringFilterList.get(i).getPlateNumber());
+                        violation.setViolationType(mStringFilterList.get(i).getViolationType());
+                        violation.setViolationDate(mStringFilterList.get(i).getViolationDate());
                         filterList.add(violation);
                     }
                 }
@@ -124,7 +128,6 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
                 results.values = mStringFilterList;
             }
             return results;
-
         }
 
         @Override

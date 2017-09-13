@@ -42,7 +42,7 @@ public class ParkingAreaHelper extends View {
     private Context context;
     private AlertDialog.Builder builder;
 
-    private int maxAcademicAreaParkingSlot = 71;
+    private int maxAcademicHsParkingSlot = 71;
     private float []xAxis = {};
     private float []yAxis = {};
     private String []vacantSlots = {};
@@ -63,16 +63,16 @@ public class ParkingAreaHelper extends View {
             builder = new AlertDialog.Builder(context);
         }
 
-        if (this.parkingArea == 0) {
+        if (this.parkingArea == 3) {
             try {
-                vacantSlots = sharedPreferences.getString("keySlotsAcademic", "").split(",");
+                vacantSlots = sharedPreferences.getString("keyHsSlots", "").split(",");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
 
-            Log.e(TAG, "Academic Vacant slots: "+sharedPreferences.getString("keySlotsAcademic", ""));
-            xAxis = new float[maxAcademicAreaParkingSlot];
-            yAxis = new float[maxAcademicAreaParkingSlot];
+            Log.e(TAG, "Academic Vacant slots: "+sharedPreferences.getString("keyHsSlots", ""));
+            xAxis = new float[maxAcademicHsParkingSlot];
+            yAxis = new float[maxAcademicHsParkingSlot];
         }
         TypedValue tv = new TypedValue();
         if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
@@ -142,6 +142,7 @@ public class ParkingAreaHelper extends View {
                 xAxis[i] = x;
                 yAxis[i] = y;
             }
+
             if (flag) {
                 circle.setColor(vacant);
             }
@@ -266,6 +267,7 @@ public class ParkingAreaHelper extends View {
                 middleUpperStartY += dipToPixels(this.context, 30);
             }
         }
+
         if (width == 1440 && height == (2392 - actionBarSize)) {
             middleUpperStartY += 50;
             middleUpperStartX -= 24;
@@ -275,6 +277,7 @@ public class ParkingAreaHelper extends View {
         } else if (width == 768 && height == (1184 - actionBarSize)) {
             middleUpperStartX -= 16;
         }
+
         for (int i = 16; i <= 24; i++) {
             float x = middleUpperStartX * ((float) width / (float) scaledBitmap.getWidth());
             float y = middleUpperStartY * ((float) height / (float) scaledBitmap.getHeight());
@@ -350,6 +353,7 @@ public class ParkingAreaHelper extends View {
                 xAxis[i] = x;
                 yAxis[i] = y;
             }
+
             if (flag) {
                 circle.setColor(vacant);
             }
@@ -493,9 +497,9 @@ public class ParkingAreaHelper extends View {
                  * for now set the pressed to true
                  */
                 if (pressed) {
-                    if (parkingArea == 0) {
+                    if (parkingArea == 3) {
                         Log.e(TAG, "Touch X: "+touchX);
-                        for (int i = 1; i < maxAcademicAreaParkingSlot; i++) {
+                        for (int i = 1; i < maxAcademicHsParkingSlot; i++) {
                             int nearestMatchXAxis = 0;
                             int nearestIndex = 0;
                             boolean insideCircle = false;

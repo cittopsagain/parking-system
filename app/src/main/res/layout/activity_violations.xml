@@ -9,16 +9,16 @@
         android:id="@+id/parking_area_text_view_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
+        android:textSize="14dp"
         android:text="@string/area"
         android:textStyle="normal"
         android:layout_alignParentTop="true" />
-
+    
     <TextView
         android:id="@+id/plate_no_text_view_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
+        android:textSize="14dp"
         android:layout_below="@id/parking_area_text_view_id"
         android:text="@string/plate_no"
         android:textStyle="normal" />
@@ -27,7 +27,7 @@
         android:id="@+id/violation_type_text_view_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
+        android:textSize="14dp"
         android:layout_below="@id/plate_no_text_view_id"
         android:text="@string/violations"
         android:textStyle="normal" />
@@ -40,5 +40,5 @@
         android:layout_marginTop="1dip"
         android:text="@string/date_time_violation"
         android:textSize="14dp"
-        android:textStyle="normal"/>
+        android:textStyle="normal" />
 </RelativeLayout>

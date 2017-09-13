@@ -10,6 +10,15 @@ public class Violation {
     public String violationType;
     public String parkingArea;
     public String violationDate;
+    public int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getParkingArea() {
         return parkingArea;

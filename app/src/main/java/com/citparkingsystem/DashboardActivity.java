@@ -23,6 +23,8 @@ import com.citparkingsystem.lib.SessionManager;
 import com.citparkingsystem.lib.VolleySingleton;
 import com.citparkingsystem.requests.Parking;
 
+import java.util.ArrayList;
+
 /**
  * Created by Dave Tolentin on 7/23/2017.
  */
@@ -41,6 +43,7 @@ public class DashboardActivity extends AppCompatActivity
 
     private Toolbar mToolbar;
     private TextView txtFullName;
+    private ArrayList<String> slotsArray = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,17 +83,25 @@ public class DashboardActivity extends AppCompatActivity
         /*networkImageView.setImageUrl(sharedPreferences.getString("keyUserProfile", ""),
                                         imageLoader);*/
         /*networkImageView.setImageUrl("http://"+serverAddress.IP+
-                serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/default.jpg", imageLoader);*/
+                serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/profile2.jpg", imageLoader);*/
 
         networkImageView.setImageUrl("http://"+serverAddress.IP+"/"+serverAddress.PACKAGE+
-                "images/default.jpg", imageLoader);
+                "images/profile2.jpg", imageLoader);
 
-        Log.e(TAG, "http://"+serverAddress.IP+
-                        serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/default.jpg");
+        /*Log.e(TAG, "http://"+serverAddress.IP+
+                        serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/profile2.jpg");*/
         /*String fullName = sharedPreferences.getString("keyFirstName", "")+" "+
                 sharedPreferences.getString("keyLastName", "");*/
         txtFullName.setText("Welcome Guest!");
         String parkingArea = sharedPreferences.getString("keyParkingArea", "");
+        slotsArray.add(0, "academic");
+        slotsArray.add(1, "st");
+        slotsArray.add(2, "backgate");
+        slotsArray.add(3, sharedPreferences.getString("keyHsSlots", ""));
+        slotsArray.add(4, "canteen");
+        Log.e(TAG, "Hs Slot: "+sharedPreferences.getString("keyHsSlots", "").split(","));
+        Parking p = new Parking(this);
+        p.getParkingSlots();
         displayView(0);
     }
 
@@ -115,19 +126,20 @@ public class DashboardActivity extends AppCompatActivity
         switch (position) {
             case 0:
                 title = getString(R.string.dashboard);
-                Parking p = new Parking(this);
-                p.getParkingSlots();
                 fragment = new MenuFragment();
+                /*Bundle bundle = new Bundle();
+                bundle.putStringArrayList("slots", slotsArray);
+                fragment.setArguments(bundle);*/
                 break;
             case 1:
                 title = getString(R.string.violations);
                 fragment = new ViolationsFragment();
                 break;
-            case 2:
+            /*case 2:
                 title = getString(R.string.parking_history);
                 fragment = new ParkingHistoryFragment();
-                break;
-            case 3:
+                break;*/
+            case 2:
                     /*sessionManager.clearUserData();
                     logout();*/
                 sessionManager.clearUserData();

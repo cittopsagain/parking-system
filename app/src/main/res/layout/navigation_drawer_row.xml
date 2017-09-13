@@ -19,7 +19,7 @@
         android:paddingLeft="15dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:textColor="#212121"
+        android:textColor="#FFFFFF"
         android:fontFamily="sans-serif"
         android:textSize="16dp"
         android:textStyle="normal"/>

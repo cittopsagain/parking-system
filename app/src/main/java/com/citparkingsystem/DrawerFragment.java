@@ -36,10 +36,10 @@ public class DrawerFragment extends Fragment {
     private static int[] icons;
 
     private int ICONS[] = {
-            R.mipmap.ic_dashboard_black_24dp,
-            R.mipmap.ic_assignment_ind_black_24dp,
-            R.mipmap.ic_history_black_24dp,
-            R.mipmap.ic_power_settings_new_black_24dp
+            R.mipmap.ic_dashboard_white_24dp,
+            R.mipmap.ic_assignment_ind_white_24dp,
+            // R.mipmap.ic_history_black_24dp,
+            R.mipmap.ic_power_settings_new_white_24dp
     };
 
     public DrawerFragment() {
