@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Dave Tolentin on 7/24/2017.
+ * Created by Walter Ybanez on 7/24/2017.
  */
 
 public class NavigationDrawerAdapter extends RecyclerView.Adapter

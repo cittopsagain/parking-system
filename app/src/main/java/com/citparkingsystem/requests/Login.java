@@ -15,7 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Dave Tolentin on 7/23/2017.
+ * Created by Walter Ybanez on 7/23/2017.
  */
 
 public class Login {

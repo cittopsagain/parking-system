@@ -17,7 +17,7 @@ import com.citparkingsystem.encapsulate.Menu;
 import java.util.List;
 
 /**
- * Created by Dave Tolentin on 8/13/2017.
+ * Created by Walter Ybanez on 8/13/2017.
  */
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> {
@@ -49,6 +49,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
         this.mContext = mContext;
         this.menuList = menuList;
         this.callFragment = callFragment;
+    }
+
+    public MenuAdapter() {
+
     }
 
     @Override
@@ -85,6 +89,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
                 showPopupMenu(holder.overflow);
             }
         });*/
+    }
+
+    public void updateHolderValue(String value, String maxSlots) {
+        final MyViewHolder holder = null;
+        holder.title.setText(value+" available out of "+maxSlots+" slots");
     }
 
     /**

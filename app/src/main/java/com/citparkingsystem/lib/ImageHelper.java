@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 /**
- * Created by Dave Tolentin on 7/31/2017.
+ * Created by Walter Ybanez on 7/31/2017.
  */
 
 public class ImageHelper {

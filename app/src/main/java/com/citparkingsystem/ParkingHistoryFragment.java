@@ -29,7 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by Dave Tolentin on 8/13/2017.
+ * Created by Walter Ybanez on 8/13/2017.
  */
 
 public class ParkingHistoryFragment extends Fragment {

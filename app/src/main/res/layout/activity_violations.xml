@@ -24,19 +24,60 @@
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/violation_type_text_view_id"
+        android:id="@+id/car_model_text_view_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14dp"
         android:layout_below="@id/plate_no_text_view_id"
+        android:text="@string/enter_car_make"
+        android:visibility="gone"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/car_make_text_view_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:layout_below="@id/car_model_text_view_id"
+        android:text="@string/enter_car_model"
+        android:visibility="gone"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/car_color_text_view_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:layout_below="@id/car_make_text_view_id"
+        android:text="@string/enter_car_color"
+        android:visibility="gone"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/violation_type_text_view_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:layout_below="@id/car_color_text_view_id"
         android:text="@string/violations"
+        android:visibility="gone"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/additional_details_text_view_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:visibility="gone"
+        android:layout_below="@id/violation_type_text_view_id"
+        android:text="@string/enter_additional_details"
         android:textStyle="normal" />
 
     <TextView
         android:id="@+id/date_time_violation_text_view_id"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/violation_type_text_view_id"
+        android:layout_below="@id/additional_details_text_view_id"
         android:layout_marginTop="1dip"
         android:text="@string/date_time_violation"
         android:textSize="14dp"

@@ -1,7 +1,7 @@
 package com.citparkingsystem.lib;
 
 /**
- * Created by Dave Tolentin on 8/9/2017.
+ * Created by Walter Ybanez on 8/9/2017.
  */
 
 public class StringHelper {

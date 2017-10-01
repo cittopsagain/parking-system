@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Dave Tolentin on 7/24/2017.
+ * Created by Walter Ybanez on 7/24/2017.
  */
 
 public class DrawerFragment extends Fragment {
@@ -36,10 +36,11 @@ public class DrawerFragment extends Fragment {
     private static int[] icons;
 
     private int ICONS[] = {
-            R.mipmap.ic_dashboard_white_24dp,
-            R.mipmap.ic_assignment_ind_white_24dp,
+            R.mipmap.ic_dashboard_black_24dp,
+            R.mipmap.ic_assignment_ind_black_24dp,
             // R.mipmap.ic_history_black_24dp,
-            R.mipmap.ic_power_settings_new_white_24dp
+            R.mipmap.ic_directions_car_black_24dp,
+            R.mipmap.ic_power_settings_new_black_24dp
     };
 
     public DrawerFragment() {

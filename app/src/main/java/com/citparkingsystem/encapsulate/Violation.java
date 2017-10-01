@@ -1,7 +1,7 @@
 package com.citparkingsystem.encapsulate;
 
 /**
- * Created by Dave Tolentin on 7/27/2017.
+ * Created by Walter Ybanez on 7/27/2017.
  */
 
 public class Violation {
@@ -10,6 +10,43 @@ public class Violation {
     public String violationType;
     public String parkingArea;
     public String violationDate;
+    public String carModel;
+    public String carColor;
+    public String carMake;
+    public String additionalDetails;
+
+    public String getCarMake() {
+        return carMake;
+    }
+
+    public void setCarMake(String carMake) {
+        this.carMake = carMake;
+    }
+
+    public String getAdditionalDetails() {
+        return additionalDetails;
+    }
+
+    public void setAdditionalDetails(String additionalDetails) {
+        this.additionalDetails = additionalDetails;
+    }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public String getCarColor() {
+        return carColor;
+    }
+
+    public void setCarColor(String carColor) {
+        this.carColor = carColor;
+    }
+
     public int id;
 
     public int getId() {

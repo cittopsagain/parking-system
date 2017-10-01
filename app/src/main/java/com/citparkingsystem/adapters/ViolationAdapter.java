@@ -18,7 +18,7 @@ import com.citparkingsystem.lib.StringHelper;
 import java.util.ArrayList;
 
 /**
- * Created by Dave Tolentin on 7/27/2017.
+ * Created by Walter Ybanez on 7/27/2017.
  */
 
 public class ViolationAdapter extends BaseAdapter implements Filterable {
@@ -81,12 +81,20 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
         // txtPlateNo.setTypeface(font);
         TextView txtViolationType = (TextView) view.findViewById(R.id.violation_type_text_view_id);
         TextView txtParkingArea = (TextView) view.findViewById(R.id.parking_area_text_view_id);
+        TextView txtCarModel = (TextView) view.findViewById(R.id.car_model_text_view_id);
+        TextView txtCarColor = (TextView) view.findViewById(R.id.car_color_text_view_id);
+        TextView txtCarMake = (TextView) view.findViewById(R.id.car_make_text_view_id);
+        TextView txtAdditionalDetails = (TextView) view.findViewById(R.id.additional_details_text_view_id);
         TextView txtDateTimeViolation = (TextView) view.findViewById(
                 R.id.date_time_violation_text_view_id);
 
         txtPlateNo.setText(violation.getPlateNumber());
         txtViolationType.setText(violation.getViolationType());
         txtParkingArea.setText(violation.getParkingArea());
+        txtCarModel.setText(violation.getCarModel());
+        txtCarColor.setText(violation.getCarColor());
+        txtCarMake.setText(violation.getCarMake());
+        txtAdditionalDetails.setText(violation.getAdditionalDetails());
         txtDateTimeViolation.setText(violation.getViolationDate());
 
         return view;

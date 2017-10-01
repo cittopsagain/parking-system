@@ -3,7 +3,7 @@ package com.citparkingsystem.lib;
 import android.content.SearchRecentSuggestionsProvider;
 
 /**
- * Created by Dave Tolentin on 7/28/2017.
+ * Created by Walter Ybanez on 7/28/2017.
  */
 
 public class SuggestionProvider extends SearchRecentSuggestionsProvider {

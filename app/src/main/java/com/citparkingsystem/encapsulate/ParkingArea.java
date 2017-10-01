@@ -1,7 +1,7 @@
 package com.citparkingsystem.encapsulate;
 
 /**
- * Created by Dave Tolentin on 8/13/2017.
+ * Created by Walter Ybanez on 8/13/2017.
  */
 
 public class ParkingArea {

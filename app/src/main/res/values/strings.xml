@@ -9,6 +9,7 @@
     <string name="nav_item_dashboard">Dashboard</string>
     <string name="nav_item_listing_screen_violation">Violations</string>
     <string name="nav_item_listing_screen_parking_history">Parking History</string>
+    <string name="nav_item_reset_parking_slots">Reset Parking Slots</string>
     <!-- <string name="nav_item_logout">Logout</string>-->
     <string name="nav_item_exit">Exit</string>
     <string name="full_name">Full Name</string>
@@ -32,8 +33,13 @@
     <string name="cancel">Cancel</string>
     <string name="enter_plate_num">Plate Number</string>
     <string name="enter_violation">Violation</string>
+    <string name="enter_additional_details">Additional Details</string>
+    <string name="enter_car_model">Model</string>
+    <string name="enter_car_make">Make</string>
+    <string name="enter_car_color">Color</string>
     <string name="success_save">Save Success</string>
     <string name="success_edit">Edit Success</string>
+    <string name="success_delete">Delete Success</string>
     <string name="plate_num">Plate Number</string>
     <string name="area">Area</string>
     <string name="loading">Loading...</string>
@@ -45,6 +51,7 @@
         <item>@string/nav_item_dashboard</item>
         <item>@string/nav_item_listing_screen_violation</item>
         <!--<item>@string/nav_item_listing_screen_parking_history</item>-->
+        <item>@string/nav_item_reset_parking_slots</item>
         <item>@string/nav_item_exit</item>
     </string-array>
 

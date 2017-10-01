@@ -19,7 +19,7 @@ import com.citparkingsystem.lib.SessionManager;
 import com.citparkingsystem.requests.Parking;
 
 /**
- * Created by Dave Tolentin on 8/31/2017.
+ * Created by Walter Ybanez on 8/31/2017.
  */
 
 public class SplashActivity extends AppCompatActivity {

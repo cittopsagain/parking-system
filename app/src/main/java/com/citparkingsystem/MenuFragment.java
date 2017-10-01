@@ -1,6 +1,7 @@
 package com.citparkingsystem;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -15,6 +16,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.citparkingsystem.adapters.MenuAdapter;
@@ -22,12 +25,13 @@ import com.citparkingsystem.encapsulate.Menu;
 import com.citparkingsystem.lib.ParkingAreas;
 import com.citparkingsystem.lib.SessionManager;
 import com.citparkingsystem.lib.StringHelper;
+import com.citparkingsystem.requests.Parking;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Dave Tolentin on 7/24/2017.
+ * Created by Walter Ybanez on 7/24/2017.
  */
 
 public class MenuFragment extends Fragment implements View.OnClickListener,
@@ -39,6 +43,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
     private MenuAdapter adapter;
     private SessionManager sessionManager;
     private SharedPreferences sharedPreferences;
+    private Parking parking;
 
     public MenuFragment() {
 
@@ -46,6 +51,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        parking = new Parking(getActivity());
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             ArrayList slots = bundle.getStringArrayList("slots");
@@ -60,6 +66,25 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(android.view.Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_parking_area, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(android.view.Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_refresh) {
+            parking.getParkingSlots();
+            adapter.notifyDataSetChanged();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

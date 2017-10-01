@@ -10,12 +10,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -27,7 +29,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 /**
- * Created by Dave Tolentin on 8/2/2017.
+ * Created by Walter Ybanez on 8/2/2017.
  */
 
 public class ParkingAreaHelper extends View {
@@ -41,6 +43,8 @@ public class ParkingAreaHelper extends View {
     private Parking parking;
     private Context context;
     private AlertDialog.Builder builder;
+    private String newSlots = "";
+    private int nearestIndex;
 
     private int maxAcademicHsParkingSlot = 71;
     private float []xAxis = {};
@@ -48,6 +52,11 @@ public class ParkingAreaHelper extends View {
     private String []vacantSlots = {};
     private boolean pressed = true;
     private int actionBarSize = 0;
+    private Bitmap image;
+    Bitmap scaledBitmap;
+
+    private ScaleGestureDetector scaleDetector;
+    private float scaleFactor = 1.f;
 
     public ParkingAreaHelper(Context context, int position) {
         super(context);
@@ -79,11 +88,36 @@ public class ParkingAreaHelper extends View {
             actionBarSize = TypedValue.complexToDimensionPixelSize(tv.data,
                     getResources().getDisplayMetrics());
         }
+        init(context);
+    }
+
+    private void init(Context ctx) {
+        image = BitmapFactory.decodeResource(getResources(), R.drawable.ic_academic_area_2d);
+        scaleDetector = new ScaleGestureDetector(ctx, new ScaleGestureDetector.OnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                scaleFactor *= detector.getScaleFactor();
+                scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 10.0f));
+                invalidate();
+                return true;
+            }
+
+            @Override
+            public boolean onScaleBegin(ScaleGestureDetector detector) {
+                return false;
+            }
+
+            @Override
+            public void onScaleEnd(ScaleGestureDetector detector) {
+
+            }
+        });
     }
 
     @Override
     protected void onDraw(final Canvas canvas) {
-        super.onDraw(canvas);
+        // super.onDraw(canvas);
+        canvas.save();
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).
                 getDefaultDisplay();
@@ -91,7 +125,7 @@ public class ParkingAreaHelper extends View {
         // Hardcode all x, y and radius in all screen devices
         float deviceDensity = context.getResources().getDisplayMetrics().density;
         Log.e(TAG, "Device density: "+deviceDensity);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_academic_area_2d);
+        // Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_academic_area_2d);
         int width = DeviceHelper.getScreenWidth();
         // int height = DeviceHelper.getScreenHeight() /*- actionBarSize*/;
         int height = DeviceHelper.getScreenHeight() - actionBarSize;
@@ -100,9 +134,10 @@ public class ParkingAreaHelper extends View {
         /*int width = size.x;
         int height = size.y;*/
         Log.e(TAG, "Width: "+width+" Height: "+DeviceHelper.getScreenHeight());
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+        // Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+        scaledBitmap = Bitmap.createScaledBitmap(image, width, height, false);
         canvas.drawBitmap(scaledBitmap, 0, 0, null);
-
+        canvas.restore();
         float radius = dipToPixels(this.context, 5);
         // Upper slot
         float upperStartX = 0;
@@ -472,6 +507,7 @@ public class ParkingAreaHelper extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        scaleDetector.onTouchEvent(event);
         float touchX = event.getX();
         float touchY = event.getY();
         switch(event.getAction()) {
@@ -501,7 +537,7 @@ public class ParkingAreaHelper extends View {
                         Log.e(TAG, "Touch X: "+touchX);
                         for (int i = 1; i < maxAcademicHsParkingSlot; i++) {
                             int nearestMatchXAxis = 0;
-                            int nearestIndex = 0;
+                            nearestIndex = 0;
                             boolean insideCircle = false;
                             for (int j = 0; j < xAxis.length; j++) {
                                 if (touchInsideCircle(touchX, touchY, xAxis[j], yAxis[j],
@@ -547,25 +583,38 @@ public class ParkingAreaHelper extends View {
                                 } else {
                                     // means it is occupied
                                     // set to vacant and update the array with corresponding index
-                                    String newSlots = "";
+                                    // String newSlots = "";
                                     Log.e(TAG, "Slot length: "+vacantSlots.length);
+                                    builder.setTitle("Alert")
+                                            .setMessage("Are you sure you want to vacate this slot?")
+                                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    for (int l = 0; l < vacantSlots.length + 1; l++) {
+                                                        if (l  == vacantSlots.length) {
+                                                            newSlots += nearestIndex;
+                                                        } else {
+                                                            newSlots += vacantSlots[l]+ " ";
+                                                        }
+                                                    }
+                                                    Log.e(TAG, "Vacant Slots Else: "+newSlots);
+                                                    /*Log.e(TAG, "Found: "+found+" Occupied index: "+
+                                                            nearestIndex+" New Slot: "+newSlots);*/
 
-                                    for (int l = 0; l < vacantSlots.length + 1; l++) {
-                                        if (l  == vacantSlots.length) {
-                                            newSlots += nearestIndex;
-                                        } else {
-                                            newSlots += vacantSlots[l]+ " ";
+                                                    String []x = newSlots.split(" ");
+                                                    vacantSlots = StringHelper.implode(", ", x).split(", ");
+                                                    // Update now the table
+                                                    parking.updateParkingAreaSlot(StringHelper.implode(", ", x),
+                                                            parkingArea, String.valueOf(nearestIndex), "vacant");
+                                                    // Tell the View to redraw the Canvas
+                                                    invalidate();
+                                                }
+                                            }).setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // pressed = false
                                         }
-                                    }
-                                    Log.e(TAG, "Vacant Slots Else: "+newSlots);
-                                    Log.e(TAG, "Found: "+found+" Occupied index: "+
-                                            nearestIndex+" New Slot: "+newSlots);
-
-                                    String []x = newSlots.split(" ");
-                                    vacantSlots = StringHelper.implode(", ", x).split(", ");
-                                    // Update now the table
-                                    parking.updateParkingAreaSlot(StringHelper.implode(", ", x),
-                                            parkingArea, String.valueOf(nearestIndex), "vacant");
+                                    }).show();
                                 }
 
                                 // Query again for new slots
@@ -625,5 +674,16 @@ public class ParkingAreaHelper extends View {
             return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
         } catch (FileNotFoundException e) {}
         return null;
+    }
+
+    private class ScaleListener extends
+            ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scaleFactor *= detector.getScaleFactor();
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 10.0f));
+            invalidate();
+            return true;
+        }
     }
 }

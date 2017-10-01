@@ -1,8 +1,11 @@
 package com.citparkingsystem;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -15,18 +18,28 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.citparkingsystem.encapsulate.ParkingArea;
+import com.citparkingsystem.lib.ParkingAreas;
 import com.citparkingsystem.lib.ServerAddress;
 import com.citparkingsystem.lib.SessionManager;
+import com.citparkingsystem.lib.StringHelper;
 import com.citparkingsystem.lib.VolleySingleton;
 import com.citparkingsystem.requests.Parking;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * Created by Dave Tolentin on 7/23/2017.
+ * Created by Walter Ybanez on 7/23/2017.
  */
 
 public class DashboardActivity extends AppCompatActivity
@@ -40,10 +53,13 @@ public class DashboardActivity extends AppCompatActivity
     private DrawerFragment drawerFragment;
     private NetworkImageView networkImageView;
     private ImageLoader imageLoader;
+    private AlertDialog.Builder builder;
 
     private Toolbar mToolbar;
     private TextView txtFullName;
     private ArrayList<String> slotsArray = new ArrayList<>();
+
+    private Parking parking;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +85,14 @@ public class DashboardActivity extends AppCompatActivity
             imageLoader = VolleySingleton.getInstance().getImageLoader();
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this,
+                    android.R.style.Theme_Material_Light_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+
+        parking = new Parking(this);
         serverAddress = new ServerAddress();
 
         /*if (!sessionManager.isLoggedIn()) {
@@ -82,17 +106,17 @@ public class DashboardActivity extends AppCompatActivity
         networkImageView = (NetworkImageView) findViewById(R.id.user_profile_circle_image_view_id);
         /*networkImageView.setImageUrl(sharedPreferences.getString("keyUserProfile", ""),
                                         imageLoader);*/
-        /*networkImageView.setImageUrl("http://"+serverAddress.IP+
-                serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/profile2.jpg", imageLoader);*/
+        networkImageView.setImageUrl("http://"+serverAddress.IP+
+                serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/ic_guard.png", imageLoader);
 
-        networkImageView.setImageUrl("http://"+serverAddress.IP+"/"+serverAddress.PACKAGE+
-                "images/profile2.jpg", imageLoader);
+        /*networkImageView.setImageUrl("http://"+serverAddress.IP+"/"+serverAddress.PACKAGE+
+                "images/ic_guard.png", imageLoader);*/
 
-        /*Log.e(TAG, "http://"+serverAddress.IP+
-                        serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/profile2.jpg");*/
+        Log.e(TAG, "http://"+serverAddress.IP+
+                        serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/ic_guard.png");
         /*String fullName = sharedPreferences.getString("keyFirstName", "")+" "+
                 sharedPreferences.getString("keyLastName", "");*/
-        txtFullName.setText("Welcome Guest!");
+        txtFullName.setText("Welcome Guard!");
         String parkingArea = sharedPreferences.getString("keyParkingArea", "");
         slotsArray.add(0, "academic");
         slotsArray.add(1, "st");
@@ -100,8 +124,7 @@ public class DashboardActivity extends AppCompatActivity
         slotsArray.add(3, sharedPreferences.getString("keyHsSlots", ""));
         slotsArray.add(4, "canteen");
         Log.e(TAG, "Hs Slot: "+sharedPreferences.getString("keyHsSlots", "").split(","));
-        Parking p = new Parking(this);
-        p.getParkingSlots();
+        parking.getParkingSlots();
         displayView(0);
     }
 
@@ -139,7 +162,11 @@ public class DashboardActivity extends AppCompatActivity
                 title = getString(R.string.parking_history);
                 fragment = new ParkingHistoryFragment();
                 break;*/
+
             case 2:
+                displayResetDialog();
+                break;
+            case 3:
                     /*sessionManager.clearUserData();
                     logout();*/
                 sessionManager.clearUserData();
@@ -157,6 +184,80 @@ public class DashboardActivity extends AppCompatActivity
             fragmentTransaction.commit();
             getSupportActionBar().setTitle(title);
         }
+    }
+
+    private void displayResetDialog() {
+        final ArrayList <String> arrayList = new ArrayList<>();
+        for (int i = 0; i < ParkingAreas.area.length; i++) {
+            arrayList.add(ParkingAreas.area[i].toString().trim());
+        }
+        // Default to High School area
+        final boolean checkedSlots[] = new boolean[]{
+                false,
+                false,
+                false,
+                true,
+                false
+        };
+        builder.setTitle("Reset Parking Slot").setMultiChoiceItems(ParkingAreas.area, checkedSlots,
+                new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                checkedSlots[which] = isChecked;
+                String currentItem = arrayList.get(which);
+                /*Toast.makeText(getApplicationContext(),
+                        currentItem + " " + isChecked, Toast.LENGTH_SHORT).show();*/
+            }
+        }).setPositiveButton("Reset", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String areas = "";
+                for (int i = 0; i < checkedSlots.length; i++) {
+                    boolean checked = checkedSlots[i];
+                    if (checked) {
+                        /*Toast.makeText(getApplicationContext(),
+                                "Checked: "+arrayList.get(i), Toast.LENGTH_SHORT).show();*/
+                        areas += arrayList.get(i)+", ";
+                    }
+                }
+
+                parking.resetParkingAreas(StringHelper.implode(",", areas), new Parking.Callback() {
+                    @Override
+                    public void successResponse(Object object) {
+                        Log.e(TAG, (String)object);
+                        try {
+                            JSONObject jsonObject = new JSONObject((String)object);
+                            if (!jsonObject.getBoolean("reset") &&
+                                    jsonObject.getBoolean("vacant_all")) {
+                                // Cannot reset because all slots is already vacant
+                                Toast.makeText(getApplicationContext(), "Unable to reset because " +
+                                        "all slots area already vacant!", Toast.LENGTH_LONG).show();
+                            } else if (jsonObject.getBoolean("reset") &&
+                                    !jsonObject.getBoolean("vacant_all")) {
+                                Toast.makeText(getApplicationContext(), "Reset success!",
+                                        Toast.LENGTH_LONG).show();
+                                parking.getParkingSlots();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Unable to reset!",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void errorResponse(Object object) {
+                        Log.e(TAG, (String)object);
+                    }
+                });
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        }).show();
     }
 
     private void logout() {

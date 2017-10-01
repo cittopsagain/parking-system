@@ -3,7 +3,7 @@ package com.citparkingsystem.lib;
 import android.content.res.Resources;
 
 /**
- * Created by Dave Tolentin on 7/30/2017.
+ * Created by Walter Ybanez on 7/30/2017.
  */
 
 public class DeviceHelper {

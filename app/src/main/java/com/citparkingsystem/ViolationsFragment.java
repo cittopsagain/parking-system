@@ -3,6 +3,7 @@ package com.citparkingsystem;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,17 +38,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by Dave Tolentin on 7/27/2017.
+ * Created by Walter Ybanez on 7/27/2017.
  */
 
 public class ViolationsFragment extends Fragment {
 
-    private ProgressDialog pDialog;
-    private Parking parking;
+    private ProgressDialog pDialog; // Progress Dialog
+    private Parking parking; // Handles all the send/receive through the server
     private ViolationAdapter violationAdapter;
-    private ArrayList<Violation> violationList = new ArrayList<Violation>();
+    private ArrayList<Violation> violationList = new ArrayList<Violation>(); // List of all violations
     private ListView listView;
     private AlertDialog.Builder builder;
+    private AlertDialog.Builder deleteBuilder;
     private ActionMode mActionMode;
     private ArrayList selectedArea = new ArrayList();
     private int index = 0;
@@ -63,9 +65,12 @@ public class ViolationsFragment extends Fragment {
         parking = new Parking(getActivity());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(getActivity(),
-                    android.R.style.Theme_Material_Dialog_Alert);
+                    android.R.style.Theme_Material_Light_Dialog_Alert);
+            deleteBuilder = new AlertDialog.Builder(getActivity(),
+                    android.R.style.Theme_Material_Light_Dialog_Alert);
         } else {
             builder = new AlertDialog.Builder(getActivity());
+            deleteBuilder = new AlertDialog.Builder(getActivity());
         }
     }
 
@@ -80,7 +85,7 @@ public class ViolationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_violations, container, false);
         listView = (ListView) rootView.findViewById(R.id.violations_list_view_id);
-        new executeTask().execute();
+        new executeTask().execute("");
         return rootView;
     }
 
@@ -116,18 +121,29 @@ public class ViolationsFragment extends Fragment {
                 u.add(i, StringHelper.toTheUpperCaseSingle(ParkingAreas.area[i].toString().trim()));
             }
             CharSequence[] upperCaseArea = u.toArray(new CharSequence[u.size()]);
-
             LinearLayout layout = new LinearLayout(getActivity());
             layout.setOrientation(LinearLayout.VERTICAL);
 
             final EditText txtPlateNum = new EditText(getActivity());
             final EditText txtViolationType = new EditText(getActivity());
+            final EditText txtCarModel = new EditText(getActivity());
+            final EditText txtCarColor = new EditText(getActivity());
+            final EditText txtCarMake = new EditText(getActivity());
+            final EditText txtAdditionalDetails = new EditText(getActivity());
 
             txtPlateNum.setHint(R.string.enter_plate_num);
             txtViolationType.setHint(R.string.enter_violation);
+            txtCarModel.setHint(R.string.enter_car_model);
+            txtCarColor.setHint(R.string.enter_car_color);
+            txtCarMake.setHint(R.string.enter_car_make);
+            txtAdditionalDetails.setHint(R.string.enter_additional_details);
 
             layout.addView(txtPlateNum);
+            layout.addView(txtCarMake);
+            layout.addView(txtCarModel);
+            layout.addView(txtCarColor);
             layout.addView(txtViolationType);
+            layout.addView(txtAdditionalDetails);
             builder.setTitle("Enter Violation")
                     .setView(layout)
                     .setSingleChoiceItems(ParkingAreas.area, 0, new DialogInterface.OnClickListener() {
@@ -141,17 +157,21 @@ public class ViolationsFragment extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             String plateNum = txtPlateNum.getText().toString();
                             String violation = txtViolationType.getText().toString();
+                            String carModel = txtCarModel.getText().toString();
+                            String carColor = txtCarColor.getText().toString();
+                            String carMake = txtCarMake.getText().toString();
+                            String additionalDetails = txtAdditionalDetails.getText().toString();
                             if (plateNum.trim().length() > 0 || violation.trim().length() > 0) {
                                 parking.addViolation(plateNum, violation,
                                         selectedArea.size() == 0 ? ParkingAreas.area[0].toString() :
-                                                selectedArea.get(0).toString(),
-                                        new Parking.Callback() {
+                                                selectedArea.get(0).toString(), carModel, carColor,
+                                        carMake, additionalDetails, new Parking.Callback() {
                                     @Override
                                     public void successResponse(Object object) {
                                         Log.e(TAG, (String) object);
                                         Toast.makeText(getActivity(), R.string.success_save,
                                                 Toast.LENGTH_SHORT).show();
-                                        new executeTask().execute();
+                                        new executeTask().execute("");
                                     }
 
                                     @Override
@@ -170,6 +190,10 @@ public class ViolationsFragment extends Fragment {
 
                 }
             }).show();
+        } else if (item.getItemId() == R.id.menu_sort_by_violation) {
+            new executeTask().execute("violation_type");
+        } else if (item.getItemId() == R.id.menu_sort_by_area) {
+            new executeTask().execute("area");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -188,7 +212,8 @@ public class ViolationsFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... strings) {
-            parking.getViolations(new Parking.Callback() {
+            String sortBy = strings[0];
+            parking.getViolations(sortBy, new Parking.Callback() {
 
                 @Override
                 public void successResponse(Object object) {
@@ -208,6 +233,10 @@ public class ViolationsFragment extends Fragment {
                                 violation.setViolationType(jsonObject.getString("violation_type"));
                                 violation.setParkingArea(jsonObject.getString("area"));
                                 violation.setViolationDate(jsonObject.getString("violation_date"));
+                                violation.setCarModel(jsonObject.getString("car_model"));
+                                violation.setCarColor(jsonObject.getString("car_color"));
+                                violation.setCarMake(jsonObject.getString("car_make"));
+                                violation.setAdditionalDetails(jsonObject.getString("additional_details"));
                                 violationList.add(violation);
                             }
                             violationAdapter = new ViolationAdapter(getActivity(), violationList);
@@ -220,15 +249,39 @@ public class ViolationsFragment extends Fragment {
                                                                int position, long id) {
                                     Violation violation = violationList.get(position);
                                     Log.e(TAG, "Id: "+violation.getId());
-                                    /*mActionMode = ((AppCompatActivity) getActivity()).
+                                    mActionMode = ((AppCompatActivity) getActivity()).
                                             startSupportActionMode(mActionModeCallback);
                                     String tag[] = { violation.getViolationType(),
                                                     violation.getPlateNumber(),
                                                     violation.getParkingArea(),
-                                                    String.valueOf(violation.getId())};
-                                    mActionMode.setTag(tag);*/
+                                                    String.valueOf(violation.getId()),
+                                                    violation.getCarModel(),
+                                                    violation.getCarColor(),
+                                                    violation.getCarMake(),
+                                                    violation.getAdditionalDetails()
+                                                };
+                                    mActionMode.setTag(tag);
                                     view.setSelected(true);
                                     return true;
+                                }
+                            });
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Violation violation = violationList.get(position);
+                                    Log.e(TAG, "Id: "+violation.getId());
+                                    String tag[] = { violation.getViolationType(),
+                                            violation.getPlateNumber(),
+                                            violation.getParkingArea(),
+                                            String.valueOf(violation.getId()),
+                                            violation.getCarModel(),
+                                            violation.getCarColor(),
+                                            violation.getCarMake(),
+                                            violation.getAdditionalDetails()
+                                    };
+                                    Intent i = new Intent(getActivity(), EditViolation.class);
+                                    i.putExtra("values", tag);
+                                    startActivity(i);
                                 }
                             });
                         }
@@ -276,12 +329,31 @@ public class ViolationsFragment extends Fragment {
 
                     final EditText txtPlateNum = new EditText(getActivity());
                     final EditText txtViolationType = new EditText(getActivity());
+                    final EditText txtCarModel = new EditText(getActivity());
+                    final EditText txtCarColor = new EditText(getActivity());
+                    final EditText txtCarMake = new EditText(getActivity());
+                    final EditText txtAdditionalDetails = new EditText(getActivity());
+
+                    txtPlateNum.setHint(R.string.enter_plate_num);
+                    txtViolationType.setHint(R.string.enter_violation);
+                    txtCarModel.setHint(R.string.enter_car_model);
+                    txtCarColor.setHint(R.string.enter_car_color);
+                    txtCarMake.setHint(R.string.enter_car_make);
+                    txtAdditionalDetails.setHint(R.string.enter_additional_details);
 
                     txtPlateNum.setText(tag[1]);
                     txtViolationType.setText(tag[0]);
+                    txtCarModel.setText(tag[4]);
+                    txtCarColor.setText(tag[5]);
+                    txtCarMake.setText(tag[6]);
+                    txtAdditionalDetails.setText(tag[7]);
 
                     layout.addView(txtPlateNum);
+                    layout.addView(txtCarMake);
+                    layout.addView(txtCarModel);
+                    layout.addView(txtCarColor);
                     layout.addView(txtViolationType);
+                    layout.addView(txtAdditionalDetails);
 
                     for (int i = 0; i < ParkingAreas.area.length; i++) {
                         if (ParkingAreas.area[i].equals(tag[2].trim())) {
@@ -302,13 +374,17 @@ public class ViolationsFragment extends Fragment {
                                     txtPlateNum.getText().toString().trim(),
                                     txtViolationType.getText().toString().trim(),
                                     selectedArea.size() == 0 ? ParkingAreas.area[index].toString() :
-                                            selectedArea.get(0).toString(), new Parking.Callback() {
+                                            selectedArea.get(0).toString(),
+                                            txtCarModel.getText().toString(), txtCarColor.getText().toString(),
+                                            txtCarMake.getText().toString(),
+                                            txtAdditionalDetails.getText().toString(),
+                                            new Parking.Callback() {
                                         @Override
                                         public void successResponse(Object object) {
                                             Log.e(TAG, (String) object);
                                             Toast.makeText(getActivity(), R.string.success_edit,
                                                     Toast.LENGTH_SHORT).show();
-                                            new executeTask().execute();
+                                            new executeTask().execute("");
                                         }
 
                                         @Override
@@ -316,6 +392,33 @@ public class ViolationsFragment extends Fragment {
                                             Log.e(TAG, (String) object);
                                         }
                                     });
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).show();
+                    mode.finish();
+                    return true;
+                case R.id.delete:
+                    deleteBuilder.setTitle("Confirm").setMessage("Area you sure you want to delete this" +
+                            " violation?").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            parking.deleteViolation(Integer.valueOf(tag[3]), new Parking.Callback() {
+                                @Override
+                                public void successResponse(Object object) {
+                                    Toast.makeText(getActivity(), R.string.success_delete,
+                                            Toast.LENGTH_SHORT).show();
+                                    new executeTask().execute("");
+                                }
+
+                                @Override
+                                public void errorResponse(Object object) {
+                                    Log.e(TAG, (String) object);
+                                }
+                            });
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override

@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 
 /**
- * Created by Dave Tolentin on 9/9/2017.
+ * Created by Walter Ybanez on 9/9/2017.
  */
 
 public class CustomTextViewFont extends android.support.v7.widget.AppCompatTextView {

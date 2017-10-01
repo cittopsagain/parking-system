@@ -24,7 +24,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.citparkingsystem.R;
 
 /**
- * Created by Dave Tolentin on 7/23/2017.
+ * Created by Walter Ybanez on 7/23/2017.
  */
 
 public class NetworkCircleImageView extends NetworkImageView {

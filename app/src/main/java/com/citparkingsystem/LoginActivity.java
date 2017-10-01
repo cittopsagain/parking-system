@@ -12,7 +12,7 @@ import com.citparkingsystem.lib.SessionManager;
 import com.citparkingsystem.requests.Login;
 
 /**
- * Created by Dave Tolentin on 7/23/2017.
+ * Created by Walter Ybanez on 7/23/2017.
  */
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {

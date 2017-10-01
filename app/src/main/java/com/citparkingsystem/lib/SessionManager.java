@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 /**
- * Created by Dave Tolentin on 7/16/2017.
+ * Created by Walter Ybanez on 7/16/2017.
  */
 
 public class SessionManager extends ServerAddress {
@@ -39,6 +39,8 @@ public class SessionManager extends ServerAddress {
     }
 
     public void parkingAreaAvailableSlotsHs(String slots) {
+        editor.remove("keyHsSlots");
+        editor.apply();
         editor.putString("keyHsSlots", slots);
         editor.apply();
     }
