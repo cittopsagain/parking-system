@@ -44,11 +44,14 @@ public class EditViolation extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Display now the layout
         setContentView(R.layout.activity_edit_violation);
         mToolbar = (Toolbar) findViewById(R.id.dashboard_toolbar_id);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Edit Violation");
 
+        // Instantiate now the parking class
         parking = new Parking(getApplicationContext());
 
         // Get the parameters passed from ViolationsFragment, from violation list view onclick event
@@ -56,7 +59,9 @@ public class EditViolation extends AppCompatActivity implements View.OnClickList
         String[] values = intent.getStringArrayExtra("values");
         Log.e(TAG, values[0]);
 
+        // Spinner
         spinnerArea = (Spinner) findViewById(R.id.area_spinner_id);
+        // Text fields
         txtPlateNumber = (EditText) findViewById(R.id.plate_no_text_view_id);
         txtCarModel = (EditText) findViewById(R.id.car_model_text_view_id);
         txtCarMake = (EditText) findViewById(R.id.car_make_text_view_id);
@@ -64,6 +69,7 @@ public class EditViolation extends AppCompatActivity implements View.OnClickList
         txtViolationType = (EditText) findViewById(R.id.violation_type_text_view_id);
         txtAdditionalDetails = (EditText) findViewById(R.id.additional_details_text_view_id);
 
+        // Set now the values
         txtPlateNumber.setText(values[1]);
         txtCarModel.setText(values[4]);
         txtCarMake.setText(values[6]);

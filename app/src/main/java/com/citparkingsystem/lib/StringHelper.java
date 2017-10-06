@@ -5,6 +5,8 @@ package com.citparkingsystem.lib;
  */
 
 public class StringHelper {
+
+    // It is like implode in PHP
     public static String implode(String separator, String... data) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < data.length - 1; i++) {
@@ -18,6 +20,7 @@ public class StringHelper {
         return sb.toString();
     }
 
+    // It is like uc_first in PHP
     public static String toTheUpperCaseSingle(String givenString) {
         String example = givenString;
 

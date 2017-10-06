@@ -10,6 +10,9 @@ import com.android.volley.toolbox.Volley;
 
 /**
  * Created by Walter Ybanez on 7/16/2017.
+ *
+ * Class that allows only a single instance of
+ * itself to be created and gives access to that created instance
  */
 
 public class VolleySingleton extends Application {

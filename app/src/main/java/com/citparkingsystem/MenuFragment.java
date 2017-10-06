@@ -80,7 +80,9 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // You can manually refresh
         if (item.getItemId() == R.id.menu_refresh) {
+            // Get the new parking slots, if updated previously
             parking.getParkingSlots();
             adapter.notifyDataSetChanged();
         }
@@ -108,6 +110,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void albumClick(int position) {
+        // Display the Map of high school area
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(ParkingAreas.area[3]);
         ParkingAreaFragment parkingAreaFragment = new ParkingAreaFragment();
         FragmentManager fragmentManager = getFragmentManager();
@@ -163,7 +166,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
     }
 
     /**
-     * Adding few albums for testing
+     * Adding of albums
      */
     private void prepareAlbums() {
         int[] covers = new int[] {
@@ -183,9 +186,10 @@ public class MenuFragment extends Fragment implements View.OnClickListener,
         a = new Menu(ParkingAreas.area[2].toString().trim(), 11, covers[2], 20);
         albumList.add(a);
 
+        // High school area
         String[] hsSlots = sharedPreferences.getString("keyHsSlots", "").split(",");
         a = new Menu(ParkingAreas.area[3].toString().trim(), hsSlots[0] == "" ? 0 : hsSlots.length,
-                covers[3], 61);
+                covers[3], 54);
         albumList.add(a);
 
         a = new Menu(ParkingAreas.area[4].toString().trim(), 14, covers[4], 40);

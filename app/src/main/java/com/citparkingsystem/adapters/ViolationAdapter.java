@@ -100,6 +100,7 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
         return view;
     }
 
+    // Handles the live search in the list view
     private class ValueFilter extends Filter {
         Context context;
         public Context context (Context context) {
@@ -109,7 +110,7 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
+            FilterResults results = new FilterResults(); // Holds the result of your search
 
             if (constraint != null && constraint.length() > 0) {
                 ArrayList<Violation> filterList = new ArrayList<Violation>();
@@ -121,6 +122,7 @@ public class ViolationAdapter extends BaseAdapter implements Filterable {
                             (mStringFilterList.get(i).getParkingArea().toUpperCase())
                                     .contains(constraint.toString().toUpperCase())
                             ) {
+                        // Results
                         Violation violation = new Violation();
                         violation.setParkingArea(mStringFilterList.get(i).getParkingArea());
                         violation.setPlateNumber(mStringFilterList.get(i).getPlateNumber());

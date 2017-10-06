@@ -6,6 +6,10 @@ import android.preference.PreferenceManager;
 
 /**
  * Created by Walter Ybanez on 7/16/2017.
+ *
+ * Session help you when want to store user data outside your application,
+ * so that when the next time user use your application,
+ * you can easily get back his details and perform accordingly
  */
 
 public class SessionManager extends ServerAddress {

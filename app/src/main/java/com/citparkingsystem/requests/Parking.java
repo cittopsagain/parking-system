@@ -37,6 +37,7 @@ public class Parking {
         this.context = context;
     }
 
+    // Will get all the violations
     public void getViolations(String sortBy, final Callback callback) {
         key = new String[] {"sortBy"};
         value = new String[] {sortBy};
@@ -72,6 +73,7 @@ public class Parking {
         });
     }
 
+    // Will update a specific violation
     public void updateViolation(int id, String pNumber, String violation, String area,
                                 String carModel, String carColor, String carMake,
                                 String additionalDetails, final Callback callback) {
@@ -93,6 +95,7 @@ public class Parking {
         });
     }
 
+    // Will delete a specific violation
     public void deleteViolation(int id, final Callback callback) {
         key = new String[] {"id"};
         value = new String[] {String.valueOf(id)};
@@ -111,6 +114,7 @@ public class Parking {
         });
     }
 
+    // Add violation
     public void addViolation(String plateNumber, String violationType, String whatArea,
                              String carModel, String carColor, String carMake,
                              String additionalDetails, final Callback callback) {
@@ -133,6 +137,7 @@ public class Parking {
         });
     }
 
+    // Get all available parking slots
     public void getParkingSlots() {
         pDialog = new ProgressDialog(this.context);
         pDialog.setMessage("Loading...");
@@ -169,6 +174,7 @@ public class Parking {
         });
     }
 
+    // Get all available parking slots, Used in parking area fragment
     public void availableSlots(final Callback callback) {
         processRequest.sendRequest("getParkingSlots", key, value,
         new ProcessRequest.VolleyResponseListener<Object>() {
@@ -184,6 +190,7 @@ public class Parking {
         });
     }
 
+    // Update the available slot
     public void updateParkingAreaSlot(final String slot, final int whatParkingArea,
                                       final String index, final String what) {
         key = new String[] {"whatParkingArea", "slot"};
@@ -210,6 +217,7 @@ public class Parking {
         });
     }
 
+    // Add to parking history if slot number is set to occupied
     public void addToParkingHistory(String slot, String area) {
         key = new String[] {"whatParkingArea", "slot"};
         value = new String[] {area, slot};
@@ -244,6 +252,7 @@ public class Parking {
         });
     }
 
+    // Will reset the specific parking area
     public void resetParkingAreas(String areas, final Callback callback) {
         key = new String[] {"areas"};
         value = new String[] {areas};

@@ -22,6 +22,13 @@ public class ProcessRequest extends ServerAddress {
 
     }
 
+    /**
+     * Handles all the requests from the mobile through the server
+     * Note: We used a volley library inorder for us to communicate to the web
+     * For more information please visit https://developer.android.com/training/volley/index.html
+     *
+     * The purpose of this function is to handle dynamically all the requests from client
+     */
     public static void sendRequest(final String task, final String key[], final String value[],
                                    final VolleyResponseListener<Object> listener) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
@@ -40,6 +47,7 @@ public class ProcessRequest extends ServerAddress {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("task", task);
+                // Assemble all the key value pair to be passed to web server
                 try {
                     if (key.length != 0 && value.length != 0) {
                         for (int i = 0; i < key.length; i++) {

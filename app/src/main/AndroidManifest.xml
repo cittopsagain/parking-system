@@ -16,7 +16,7 @@
         <provider
             android:name=".lib.SuggestionProvider"
             android:authorities="com.citparkingsystem.lib.SuggestionProvider" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".DashboardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".DashboardActivity" />
+        <!-- <activity android:name=".DashboardActivity" /> -->
         <activity android:name=".EditViolation" />
     </application>
 

@@ -4,6 +4,7 @@ import android.content.res.Resources;
 
 /**
  * Created by Walter Ybanez on 7/30/2017.
+ * Gets the width and height of the screen
  */
 
 public class DeviceHelper {

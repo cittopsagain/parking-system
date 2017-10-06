@@ -35,6 +35,7 @@ public class DrawerFragment extends Fragment {
     private FragmentDrawerListener drawerListener;
     private static int[] icons;
 
+    // Icons
     private int ICONS[] = {
             R.mipmap.ic_dashboard_black_24dp,
             R.mipmap.ic_assignment_ind_black_24dp,

@@ -46,14 +46,14 @@ public class DashboardActivity extends AppCompatActivity
         implements DrawerFragment.FragmentDrawerListener, View.OnClickListener {
 
     private ServerAddress serverAddress;
-
+    // Identifier, used when logging
     private static final String TAG = DashboardActivity.class.getSimpleName();
     private SharedPreferences sharedPreferences;
     private SessionManager sessionManager;
     private DrawerFragment drawerFragment;
     private NetworkImageView networkImageView;
     private ImageLoader imageLoader;
-    private AlertDialog.Builder builder;
+    private AlertDialog.Builder builder; // Alert dialog
 
     private Toolbar mToolbar;
     private TextView txtFullName;
@@ -84,7 +84,7 @@ public class DashboardActivity extends AppCompatActivity
         if (imageLoader == null) {
             imageLoader = VolleySingleton.getInstance().getImageLoader();
         }
-
+        // Handle lower and higher version
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this,
                     android.R.style.Theme_Material_Light_Dialog_Alert);
@@ -92,20 +92,25 @@ public class DashboardActivity extends AppCompatActivity
             builder = new AlertDialog.Builder(this);
         }
 
+        // Instantiate classes that is need
         parking = new Parking(this);
         serverAddress = new ServerAddress();
 
         /*if (!sessionManager.isLoggedIn()) {
             logout();
         }*/
-        if (!sessionManager.isConnected()) {
+
+        /*if (!sessionManager.isConnected()) {
             sessionManager.clearUserData();
             logout();
-        }
+        }*/
 
+        // Get the holder of image
         networkImageView = (NetworkImageView) findViewById(R.id.user_profile_circle_image_view_id);
         /*networkImageView.setImageUrl(sharedPreferences.getString("keyUserProfile", ""),
                                         imageLoader);*/
+
+        // Display now the image to holder
         networkImageView.setImageUrl("http://"+serverAddress.IP+
                 serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/ic_guard.png", imageLoader);
 
@@ -114,8 +119,10 @@ public class DashboardActivity extends AppCompatActivity
 
         Log.e(TAG, "http://"+serverAddress.IP+
                         serverAddress.PORT+"/"+serverAddress.PACKAGE+"images/ic_guard.png");
+
         /*String fullName = sharedPreferences.getString("keyFirstName", "")+" "+
                 sharedPreferences.getString("keyLastName", "");*/
+
         txtFullName.setText("Welcome Guard!");
         String parkingArea = sharedPreferences.getString("keyParkingArea", "");
         slotsArray.add(0, "academic");
@@ -124,7 +131,11 @@ public class DashboardActivity extends AppCompatActivity
         slotsArray.add(3, sharedPreferences.getString("keyHsSlots", ""));
         slotsArray.add(4, "canteen");
         Log.e(TAG, "Hs Slot: "+sharedPreferences.getString("keyHsSlots", "").split(","));
+
+        // Get all slots
         parking.getParkingSlots();
+
+        // Display first the Menu View
         displayView(0);
     }
 
@@ -186,13 +197,15 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
+    // Build a dialog for reset
     private void displayResetDialog() {
         final ArrayList <String> arrayList = new ArrayList<>();
         for (int i = 0; i < ParkingAreas.area.length; i++) {
             arrayList.add(ParkingAreas.area[i].toString().trim());
         }
+
         // Default to High School area
-        final boolean checkedSlots[] = new boolean[]{
+        final boolean checkedSlots[] = new boolean[] {
                 false,
                 false,
                 false,
@@ -204,23 +217,19 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 checkedSlots[which] = isChecked;
-                String currentItem = arrayList.get(which);
-                /*Toast.makeText(getApplicationContext(),
-                        currentItem + " " + isChecked, Toast.LENGTH_SHORT).show();*/
             }
         }).setPositiveButton("Reset", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String areas = "";
+                String areas = ""; // Holds the checked areas, i.e High school area
                 for (int i = 0; i < checkedSlots.length; i++) {
                     boolean checked = checkedSlots[i];
                     if (checked) {
-                        /*Toast.makeText(getApplicationContext(),
-                                "Checked: "+arrayList.get(i), Toast.LENGTH_SHORT).show();*/
                         areas += arrayList.get(i)+", ";
                     }
                 }
 
+                // Reset now
                 parking.resetParkingAreas(StringHelper.implode(",", areas), new Parking.Callback() {
                     @Override
                     public void successResponse(Object object) {

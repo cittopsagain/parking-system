@@ -71,10 +71,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder> 
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Remove the condition if the client gives images of the remaining parking areas
-                // and its slots
-
-                // As of now only the assigned area of my client (Highschool Area)
+                // As of now only the assigned area (Highschool Area)
                 if (position == 3) {
                     callFragment.albumClick(position);
                 }

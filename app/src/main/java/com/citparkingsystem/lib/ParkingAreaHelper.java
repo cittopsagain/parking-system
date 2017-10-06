@@ -67,7 +67,7 @@ public class ParkingAreaHelper extends View {
         this.parkingArea = position;
         parking.getParkingSlots();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+            builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog_Alert);
         } else {
             builder = new AlertDialog.Builder(context);
         }
@@ -166,7 +166,7 @@ public class ParkingAreaHelper extends View {
                     /**
                      * if flag is true it means it is available slots
                      */
-                    if (vacantSlots[j] != "") {
+                    if (!vacantSlots[j].equals("")) {
                         if (i == Integer.parseInt(vacantSlots[j].trim())) {
                             flag = true;
                         }
@@ -222,7 +222,7 @@ public class ParkingAreaHelper extends View {
                     /**
                      * if flag is true it means it is available slots
                      */
-                    if (vacantSlots[j] != "") {
+                    if (!vacantSlots[j].equals("")) {
                         if (i == Integer.parseInt(vacantSlots[j].trim())) {
                             flag = true;
                         }
@@ -275,7 +275,7 @@ public class ParkingAreaHelper extends View {
                     /**
                      * if flag is true it means it is available slots
                      */
-                    if (vacantSlots[j] != "") {
+                    if (!vacantSlots[j].equals("")) {
                         if (i == Integer.parseInt(vacantSlots[j].trim())) {
                             flag = true;
                         }
@@ -324,7 +324,7 @@ public class ParkingAreaHelper extends View {
                     /**
                      * if flag is true it means it is available slots
                      */
-                    if (vacantSlots[j] != "") {
+                    if (!vacantSlots[j].equals("")) {
                         if (i == Integer.parseInt(vacantSlots[j].trim())) {
                             flag = true;
                         }
@@ -377,7 +377,7 @@ public class ParkingAreaHelper extends View {
                     /**
                      * if flag is true it means it is available slots
                      */
-                    if (vacantSlots[j] != "") {
+                    if (!vacantSlots[j].equals("")) {
                         if (i == Integer.parseInt(vacantSlots[j].trim())) {
                             flag = true;
                         }
@@ -431,7 +431,7 @@ public class ParkingAreaHelper extends View {
                     /**
                      * if flag is true it means it is available slots
                      */
-                    if (vacantSlots[j] != "") {
+                    if (!vacantSlots[j].equals("")) {
                         if (i == Integer.parseInt(vacantSlots[j].trim())) {
                             flag = true;
                         }
@@ -484,7 +484,7 @@ public class ParkingAreaHelper extends View {
                     /**
                      * if flag is true it means it is available slots
                      */
-                    if (vacantSlots[j] != "") {
+                    if (!vacantSlots[j].equals("")) {
                         if (i == Integer.parseInt(vacantSlots[j].trim())) {
                             flag = true;
                         }
@@ -513,7 +513,6 @@ public class ParkingAreaHelper extends View {
         switch(event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 // Do not re query if the touch x and y does not match to slot x and y
-
                 builder.setTitle("Alert")
                     .setMessage("Are you sure you want to ?")
                     .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -554,7 +553,7 @@ public class ParkingAreaHelper extends View {
                                 // else add slot index if set to vacant
                                 boolean found = false;
                                 for (int k = 0; k < vacantSlots.length; k++) {
-                                    if (vacantSlots[k] != "") {
+                                    if (!vacantSlots[k].equals("")) {
                                         if (Integer.parseInt(
                                                 vacantSlots[k].trim()) == nearestIndex) {
                                             found = true; // vacant
@@ -567,7 +566,7 @@ public class ParkingAreaHelper extends View {
                                     Log.e(TAG, "Found: "+found+" Vacant index: "+nearestIndex);
                                     String newSlots = "";
                                     for (int l = 0; l < vacantSlots.length; l++) {
-                                        if (vacantSlots[l] != "") {
+                                        if (!vacantSlots[l].equals("")) {
                                             if (Integer.parseInt(vacantSlots[l].trim())
                                                     != nearestIndex) {
                                                 newSlots += vacantSlots[l]+ " ";
