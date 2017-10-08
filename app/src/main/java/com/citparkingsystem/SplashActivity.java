@@ -11,9 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.citparkingsystem.lib.DeviceHelper;
 import com.citparkingsystem.lib.ProcessRequest;
 import com.citparkingsystem.lib.SessionManager;
 import com.citparkingsystem.requests.Parking;
@@ -52,6 +55,7 @@ public class SplashActivity extends AppCompatActivity {
         parking = new Parking(this);
         handler = new Handler();
 
+        // Handle lower versions of android devices
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this,
                     android.R.style.Theme_Material_Light_Dialog_Alert);
@@ -59,6 +63,7 @@ public class SplashActivity extends AppCompatActivity {
             builder = new AlertDialog.Builder(this);
         }
 
+        // If session is active, redirect directly to dashboard
         if (sessionManager.isConnected()) {
             Intent mainIntent = new Intent(SplashActivity.this, DashboardActivity.class);
             mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -68,6 +73,7 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
+    // Make sure you are connected to server, if not prompt a alert to retry
     public void connect() {
         String key[] = {};
         String val[] = {};

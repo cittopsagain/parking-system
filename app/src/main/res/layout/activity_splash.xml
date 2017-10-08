@@ -4,16 +4,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="@color/colorGold">
 
     <ImageView
         android:id="@+id/img_view_cit_logo"
-        android:layout_width="200dip"
-        android:layout_height="200dip"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_width="150dip"
+        android:layout_height="150dip"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginTop="150dp"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_cit_log" />
+        app:srcCompat="@drawable/ic_cit_logo" />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -27,5 +27,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/please_wait"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorMaroon"/>
 </LinearLayout>
