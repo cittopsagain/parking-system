@@ -168,6 +168,50 @@ public class ParkingAreaFragment extends Fragment implements View.OnClickListene
 
             lastRightStartX = 1130;
             lastRightStartY = 900;
+        } else if (height == 1920 && width == 1080) {
+            // For Samsung S5 Device
+            upperStartX = 230;
+            upperStartY = 60;
+
+            belowUpperStartX = 180;
+            belowUpperStartY = 340;
+
+            middleStartX = 620;
+            middleStartY = 220;
+
+            belowMiddleStartX = 670;
+            belowMiddleStartY = 570;
+
+            leftStartX = 360;
+            leftStartY = 1280;
+
+            belowLeftStartX = 420;
+            belowLeftStartY = 1520;
+
+            lastRightStartX = 850;
+            lastRightStartY = 680;
+        } else if (height == 1280 && width == 720) {
+            // Devices like Samsung S3 and Oppo F1
+            upperStartX = 140;
+            upperStartY = 30;
+
+            belowUpperStartX = 120;
+            belowUpperStartY = 230;
+
+            middleStartX = 410;
+            middleStartY = 130;
+
+            belowMiddleStartX = 450;
+            belowMiddleStartY = 370;
+
+            leftStartX = 240;
+            leftStartY = 850;
+
+            belowLeftStartX = 280;
+            belowLeftStartY = 1010;
+
+            lastRightStartX = 570;
+            lastRightStartY = 450;
         }
 
         for (int i = 1; i < 55; i++) {
@@ -226,6 +270,14 @@ public class ParkingAreaFragment extends Fragment implements View.OnClickListene
                     } else if (height == 2392 && width == 1440)  {
                         upperStartX += 120;
                         upperStartY += 30;
+                    } else if (height == 1920 && width == 1080) {
+                        // For Samsung S5 Device
+                        upperStartX += 80;
+                        upperStartY += 20;
+                    } else if (height == 1280 && width == 720) {
+                        // Devices like Samsung S3 and Oppo F1
+                        upperStartX += 60;
+                        upperStartY += 16;
                     }
                 }
 
@@ -241,6 +293,14 @@ public class ParkingAreaFragment extends Fragment implements View.OnClickListene
                     } else if (height == 2392 && width == 1440)  {
                         belowUpperStartX += 114;
                         belowUpperStartY -= 35;
+                    } else if (height == 1920 && width == 1080) {
+                        // For Samsung S5 Device
+                        belowUpperStartX += 80;
+                        belowUpperStartY -= 30;
+                    } else if (height == 1280 && width == 720) {
+                        // Devices like Samsung S3 and Oppo F1
+                        belowUpperStartX += 50;
+                        belowUpperStartY -= 20;
                     }
                 }
 
@@ -256,6 +316,14 @@ public class ParkingAreaFragment extends Fragment implements View.OnClickListene
                     } else if (height == 2392 && width == 1440)  {
                         middleStartX += 20;
                         middleStartY += 80;
+                    } else if (height == 1920 && width == 1080) {
+                        // For Samsung S5 Device
+                        middleStartX += 18;
+                        middleStartY += 70;
+                    } else if (height == 1280 && width == 720) {
+                        // Devices like Samsung S3 and Oppo F1
+                        middleStartX += 13;
+                        middleStartY += 50;
                     }
                 }
 
@@ -271,6 +339,14 @@ public class ParkingAreaFragment extends Fragment implements View.OnClickListene
                     } else if (height == 2392 && width == 1440)  {
                         belowMiddleStartX += 22;
                         belowMiddleStartY += 90;
+                    } else if (height == 1920 && width == 1080) {
+                        // For Samsung S5 Device
+                        belowMiddleStartX += 16;
+                        belowMiddleStartY += 68;
+                    } else if (height == 1280 && width == 720) {
+                        // Devices like Samsung S3 and Oppo F1
+                        belowMiddleStartX += 10;
+                        belowMiddleStartY += 48;
                     }
                 }
 
@@ -286,6 +362,14 @@ public class ParkingAreaFragment extends Fragment implements View.OnClickListene
                     } else if (height == 2392 && width == 1440)  {
                         leftStartX += 54;
                         leftStartY -= 20;
+                    } else if (height == 1920 && width == 1080) {
+                        // For Samsung S5 Device
+                        leftStartX += 44;
+                        leftStartY -= 18;
+                    } else if (height == 1280 && width == 720) {
+                        // Devices like Samsung S3 and Oppo F1
+                        leftStartX += 30;
+                        leftStartY -= 12;
                     }
                 }
 
@@ -299,8 +383,16 @@ public class ParkingAreaFragment extends Fragment implements View.OnClickListene
                         belowLeftStartX += 30;
                         belowLeftStartY -= 11;
                     } else if (height == 2392 && width == 1440)  {
-                       belowLeftStartX += 54;
+                        belowLeftStartX += 54;
                         belowLeftStartY -= 20;
+                    } else if (height == 1920 && width == 1080) {
+                        // For Samsung S5 Device
+                        belowLeftStartX += 44;
+                        belowLeftStartY -= 18;
+                    } else if (height == 1280 && width == 720) {
+                        // Devices like Samsung S3 and Oppo F1
+                        belowLeftStartX += 30;
+                        belowLeftStartY -= 12;
                     }
                 }
 
@@ -316,6 +408,14 @@ public class ParkingAreaFragment extends Fragment implements View.OnClickListene
                     } else if (height == 2392 && width == 1440)  {
                         lastRightStartX += 18;
                         lastRightStartY += 90;
+                    } else if (height == 1920 && width == 1080) {
+                        // For Samsung S5 Device
+                        lastRightStartX += 16;
+                        lastRightStartY += 90;
+                    } else if (height == 1280 && width == 720) {
+                        // Devices like Samsung S3 and Oppo F1
+                        lastRightStartX += 10;
+                        lastRightStartY += 60;
                     }
                 }
 
